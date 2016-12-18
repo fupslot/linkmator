@@ -24,7 +24,7 @@
     "nodemon": "^1.11.0",
     "request-url-open-graph": "^1.1.0",
     "validator": "^6.2.0",
-    "dotenv": "^2.0.0",
+    "dotenv": "^2.0.0"
   },
   "devDependencies": {
     "expect": "^1.20.2",
