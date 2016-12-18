@@ -15,9 +15,7 @@ describe('HTTP Server', function() {
       request(this.server)
         .post('/api/og')
         .set('Cookie', `access_token=${this.accessToken}`)
-        .send({
-          title: 'Example domain'
-        })
+        .send({})
         .expect(400)
         .end(function(err, req, res) {
           const data = req.body;
