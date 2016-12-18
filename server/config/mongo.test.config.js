@@ -2,7 +2,7 @@
 
 module.exports = () => {
   return {
-    uri: process.env.MONGO_URI_TEST,
+    uri: process.env.MONGO_URI,
     options: { }
   };
 };
