@@ -13,8 +13,10 @@
   "author": "Eugene Brodsky <fupslot@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "aws-sdk": "^2.7.15",
     "body-parser": "^1.15.2",
     "colors": "^1.1.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "express-stormpath": "^3.1.6",
     "lodash": "^4.17.2",
@@ -23,8 +25,7 @@
     "node-config-files": "^1.0.0",
     "nodemon": "^1.11.0",
     "request-url-open-graph": "^1.1.0",
-    "validator": "^6.2.0",
-    "dotenv": "^2.0.0"
+    "validator": "^6.2.0"
   },
   "devDependencies": {
     "expect": "^1.20.2",
