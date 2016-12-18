@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/app.js",
-    "debug": "nodemon -- debug server/app.js",
+    "start": "./node_modules/.bin/nodemon server/app.js",
+    "debug": "./node_modules/.bin/nodemon -- debug server/app.js",
     "test": "./node_modules/.bin/mocha test/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
@@ -21,6 +21,7 @@
     "mongoose": "^4.7.2",
     "morgan": "^1.7.0",
     "node-config-files": "^1.0.0",
+    "nodemon": "^1.11.0",
     "request-url-open-graph": "^1.1.0",
     "validator": "^6.2.0"
   },
