@@ -1,4 +1,8 @@
 language: node_js
 node_js:
-  - "6.9.2"
+- 6.9.2
 script: npm test
+deploy:
+  provider: heroku
+  api_key:
+    secure: D9bN09jYZs1JI9B3wj0d/Q2hv0J0bLOlZY1pRWJ3FjzfoRy2+V5Xg4DWZgPtncj2he1AznVRwVy8EhuY1RxSoBpZRrPwN04wBJGaHH2Oq9aojRzPb+v3xlJI3Fbnwfmr+rOyld7LZM/lkkNwvAdnjUdP5vXPglxtyft3ubv4YHH1BJx35ocKSA3ua7CthDFjZEzpOrB7kKn2Lw4lirIW/nx5VlABZfkux5rhcpTpLB0WgcDX2E8JQhp9eg/XK3KKffo3hYF3908wGGfKBYSKrOV2aIj60HpoeoBx/WMXZoHrOYnCoZ/PpdcPG7qVvxZHoJeC/6egi8pwa3Y9mg782FEk1PcFmVQPzgF6P8eHRm+zz9LwAJNH8ge6iVQehO0mTCrUoDB3MTiPH7gOqivBEyKlswZD0NojtWE1N7UoAcV2gmTlPk5qUUzlC3l/ceQtmAf4PHB4rA82ScoNg+7/DFL1CMC+iNwmQeIOVb5auXVrjt6bFdcKGgCc3F+5sNqjcA+mpNBU1XPOq5LenkwHksBZd3EQPjF96uenyEo3/EE4scTQaFk5TXNq3gcjB3bHB3XlMMqDML6JvSy0Cy/mvQlzwIw87Tap/91499L05YIzWeXyXqgUInrqp7SG4Dt+sjtfA9PFgncQqpiEPceHA88/32aKOKrA8ut8rob18No=
