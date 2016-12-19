@@ -9,12 +9,12 @@ class ImageUrlObject {
     }
 
     const config = require('node-config-files')('./server/config');
-    
+
     this.url = data.url;
 
     const hash = crypto.createHash('sha256');
     hash.update(data.url, 'utf8');
-    console.log(config.common);
+    
     const parseUrl = Url.parse(data.url);
 
     this.hash_url = hash.digest('hex');
