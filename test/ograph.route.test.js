@@ -4,7 +4,6 @@ const request = require('supertest');
 const expect = require('expect');
 const util = require('./util');
 
-
 describe('HTTP Server', function() {
   this.timeout(20000);
 

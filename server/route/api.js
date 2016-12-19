@@ -1,11 +1,9 @@
 'use strict';
 const express = require('express');
-const requestUrlOpenGraph = require('request-url-open-graph');
 const validator = require('validator');
-const config = require('node-config-files')('./server/config');
-const util = require('../util');
 const router = express.Router();
-
+const OpenGraphObject = require('../lib/OpenGraphObject');
+const OpenGraph = require('../lib/OpenGraph');
 
 /**
  * POST /api/get
@@ -26,53 +24,28 @@ router.post('/api/og', function(oReq, oRes) {
     });
   }
 
-  requestUrlOpenGraph({url}, function(oError, oTags) {
-    if (oError) {
-      return oRes.sendServerError(oError);
+  const openGraph = new OpenGraph(new OpenGraphObject({url}));
+
+  function handleErrorResponse(error) {
+    if (error.name === 'ValidationError') {
+      oRes.sendValidationModelError(error);
+    } else {
+      oRes.sendServerError(error);
     }
+  }
 
-    const OGraph = require('../model/ograph');
-    const oOGraph = new OGraph(oTags);
-    // debugger;
-
-    oOGraph.validate().then(() => {
-      const promises = [];
-
-      if (Array.isArray(oTags.image)) {
-        const s3 = require('../lib/s3-image-upload')({
-          bucket: config.common.s3.bucket
-        });
-
-        oTags.image.forEach(function(image) {
-          const imageUrlObject = Object.assign(
-            {},
-            image,
-            util.getImageUrlObject(image.url)
-          );
-
-          promises.push(s3.upload(imageUrlObject));
-        });
-      }
-
-      return Promise.all(promises);
-    }).then(function(results) {
-      oOGraph.image = results.filter(function(result) {
-        return !(result instanceof Error);
-      });
-      return oOGraph.save();
-    }).then(function(model) {
-      oRes.status(201).send({
-        status: 201,
-        data: model.toJSON()
-      });
-    }).catch((oError) => {
-      if (oError.name === 'ValidationError') {
-        oRes.sendValidationModelError(oError);
-      } else {
-        oRes.sendServerError(oError);
-      }
+  function handleSuccessResponse(graph) {
+    oRes.status(201).send({
+      status: 201,
+      data: graph._openGraphModel.toJSON()
     });
-  });
+  }
+
+  openGraph.on('finish', handleSuccessResponse);
+  openGraph.on('error', handleErrorResponse);
+  openGraph.on('invalid', handleErrorResponse);
+
+  openGraph.fetch();
 });
 
 module.exports = router;

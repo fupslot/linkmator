@@ -4,6 +4,15 @@ const Schema = mongoose.Schema;
 const validator = require('validator');
 const OGraphSchema = new Schema(
   {
+    url: {
+      type: String,
+      required: true,
+      index: 'hashed',
+      validate: {
+        validator: validator.isURL,
+        msg: '{PATH} is not valid'
+      }
+    },
     title: {
       type: String,
       required: true
@@ -15,37 +24,9 @@ const OGraphSchema = new Schema(
         'The value of path `{PATH}` (`{VALUE}`) exceeds the maximum allowed length ({MAXLENGTH}).'
       ]
     },
-    url: {
-      type: String,
-      required: true,
-      validate: {
-        validator: validator.isURL,
-        msg: '{PATH} is not valid'
-      }
-    },
     image: [{
-      url: {
-        type: String,
-        required: true,
-        validate: {
-          validator: validator.isURL,
-          msg: '{PATH} is not valid'
-        }
-      },
-      hash_url: String,
-      s3_object_key: String,
-      secure_url: {
-        type: String,
-        validate: {
-          validator: validator.isURL,
-          msg: '{PATH} is not valid'
-        }
-      },
-      type: {
-        type: String
-      },
-      width: String,
-      height: String,
+      type: Schema.ObjectId,
+      rel: 'ImageObject'
     }],
     type: String,
     site: String
@@ -55,4 +36,4 @@ const OGraphSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('Resource', OGraphSchema);
+module.exports = mongoose.model('OGraphObject', OGraphSchema);
