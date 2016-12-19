@@ -7,21 +7,21 @@ const colors = require('colors/safe');
 const app = express();
 
 require('dotenv').config({silent: true});
-const oConfig = require('node-config-files')('./server/config');
+const config = require('node-config-files')('./server/config');
 
 const {
-  env: sEnv,
-  port: nPort,
-  hostname: sHostname
-} = oConfig.common.server;
+  env,
+  port,
+  hostname
+} = config.common.server;
 
 app.disable('x-powered-by');
 
-require('./common/mongoose')(oConfig);
+require('./common/mongoose')(config);
 
-app.use(require('./middleware')(app, oConfig));
+app.use(require('./middleware')(app, config));
 
-if (sEnv !== 'production') {
+if (env !== 'production') {
   app.use(morgan('dev'));
 }
 
@@ -30,8 +30,11 @@ app.use(require('./route/api'));
 
 app.on('stormpath.ready', function() {
   console.log('Stormpath: ready');
-  app.listen(nPort, sHostname, () => {
-    console.log(colors.green(`Listening port ${nPort} in "${sEnv}"`));
+  app.listen(port, hostname, () => {
+    console.log(colors.green(`S3 Bucket: ${config.common.s3.bucket}`));
+    console.log(colors.green(`S3 Region: ${config.common.s3.region}`));
+
+    console.log(colors.green(`Listening port ${port} in "${env}"`));
     app.emit('application.ready');
   });
 });

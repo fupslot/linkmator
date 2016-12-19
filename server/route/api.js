@@ -33,19 +33,20 @@ router.post('/api/og', function(oReq, oRes) {
 
     const OGraph = require('../model/ograph');
     const oOGraph = new OGraph(oTags);
+    // debugger;
 
     oOGraph.validate().then(() => {
       const promises = [];
 
-      if (Array.isArray(oOGraph.image)) {
+      if (Array.isArray(oTags.image)) {
         const s3 = require('../lib/s3-image-upload')({
           bucket: config.common.s3.bucket
         });
 
-        oOGraph.image.forEach(function(image) {
+        oTags.image.forEach(function(image) {
           const imageUrlObject = Object.assign(
             {},
-            image.toJSON(),
+            image,
             util.getImageUrlObject(image.url)
           );
 
