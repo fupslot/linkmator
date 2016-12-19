@@ -6,7 +6,7 @@
   "scripts": {
     "start": "./node_modules/.bin/nodemon server/app.js",
     "debug": "./node_modules/.bin/nodemon -- debug server/app.js",
-    "test": "./node_modules/.bin/mocha test/**/*.test.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha test/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "keywords": [],

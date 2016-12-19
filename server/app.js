@@ -6,7 +6,10 @@ const colors = require('colors/safe');
 
 const app = express();
 
-require('dotenv').config({silent: true});
+require('dotenv').config({
+  silent: true
+});
+
 const config = require('node-config-files')('./server/config');
 
 const {

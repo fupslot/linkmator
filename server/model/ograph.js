@@ -4,6 +4,15 @@ const Schema = mongoose.Schema;
 const validator = require('validator');
 const OGraphSchema = new Schema(
   {
+    url: {
+      type: String,
+      required: true,
+      index: 'hashed',
+      validate: {
+        validator: validator.isURL,
+        msg: '{PATH} is not valid'
+      }
+    },
     title: {
       type: String,
       required: true
@@ -15,16 +24,8 @@ const OGraphSchema = new Schema(
         'The value of path `{PATH}` (`{VALUE}`) exceeds the maximum allowed length ({MAXLENGTH}).'
       ]
     },
-    url: {
-      type: String,
-      required: true,
-      validate: {
-        validator: validator.isURL,
-        msg: '{PATH} is not valid'
-      }
-    },
     image: [{
-      image_object: Schema.ObjectId,
+      type: Schema.ObjectId,
       rel: 'ImageObject'
     }],
     type: String,

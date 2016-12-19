@@ -43,6 +43,7 @@ module.exports.waitUntilServerIsReady = function() {
           }
 
           self.accessToken = getAccessToken(req.headers['set-cookie']);
+          self.config = require('node-config-files')('./server/config');
 
           if (!self.accessToken) {
             reject();

@@ -21,6 +21,7 @@ const ImageObject = new Schema(
       type: String,
       required: true
     },
+    protocol: String,
     type: {
       type: String
     },

@@ -19,5 +19,9 @@ module.exports = (oConfig) => {
 
     console.log(colors.green('Database: ready'));
     console.log(colors.green(`Database: ${sUri}`));
+
+    if (oConfig.common.server.env === 'test') {
+      require('../dropdb');
+    }
   });
 };

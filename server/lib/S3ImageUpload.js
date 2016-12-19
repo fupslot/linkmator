@@ -5,7 +5,7 @@ const request = require('request');
 const config = require('node-config-files')('./server/config');
 // const util = require('../util');
 
-module.exports = function(options) {
+module.exports = function() {
   const awsConfig = new AWS.Config({
     accessKeyId: config.common.s3.accessKeyId,
     secretAccessKey: config.common.s3.secretAccessKey,
@@ -30,7 +30,7 @@ module.exports = function(options) {
         const s3 = new AWS.S3(awsConfig);
 
         var params = {
-          Bucket: options.bucket,
+          Bucket: imageUrlObject.s3_bucket,
           Key: imageUrlObject.s3_object_key,
           Body: response,
           ContentType: response.headers['content-type'],
