@@ -8,14 +8,16 @@ class ImageUrlObject {
       throw new TypeError(`"url" must be string and got ${typeof data.url}`);
     }
 
+    // No protocol
+    if (data.url.startsWith('//')) {
+      this.url = 'https:' + data.url;
+    }
+
     const config = require('node-config-files')('./server/config');
 
-    this.url = data.url;
-
     const hash = crypto.createHash('sha256');
-    hash.update(data.url, 'utf8');
-
-    const parseUrl = Url.parse(data.url);
+    hash.update(this.url, 'utf8');
+    const parseUrl = Url.parse(this.url);
 
     this.hash_url = hash.digest('hex');
     this.s3_bucket = config.common.s3.bucket;
