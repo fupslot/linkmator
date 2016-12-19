@@ -21,7 +21,7 @@ class ImageUrlObject {
 
     this.hash_url = hash.digest('hex');
     this.s3_bucket = config.common.s3.bucket;
-    this.s3_object_key = `${config.common.s3.objectKey}/${parseUrl.hostname}/`;
+    this.s3_object_key = `${config.common.s3.objectKey}/${parseUrl.hostname}/${this.hash_url}`;
     this.protocol = parseUrl.protocol.substr(0, parseUrl.protocol.length - 1);
     this.type = data.type;
     this.width = data.width;
