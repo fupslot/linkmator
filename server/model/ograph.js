@@ -24,28 +24,8 @@ const OGraphSchema = new Schema(
       }
     },
     image: [{
-      url: {
-        type: String,
-        required: true,
-        validate: {
-          validator: validator.isURL,
-          msg: '{PATH} is not valid'
-        }
-      },
-      hash_url: String,
-      s3_object_key: String,
-      secure_url: {
-        type: String,
-        validate: {
-          validator: validator.isURL,
-          msg: '{PATH} is not valid'
-        }
-      },
-      type: {
-        type: String
-      },
-      width: String,
-      height: String,
+      image_object: Schema.ObjectId,
+      rel: 'ImageObject'
     }],
     type: String,
     site: String
@@ -55,4 +35,4 @@ const OGraphSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('Resource', OGraphSchema);
+module.exports = mongoose.model('OGraphObject', OGraphSchema);
