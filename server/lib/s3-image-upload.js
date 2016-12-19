@@ -1,8 +1,6 @@
 'use strict';
-// const Url = require('url');
-const http = require('http');
-const https = require('https');
 const AWS = require('aws-sdk');
+const request = require('request');
 // const crypto = require('crypto');
 const config = require('node-config-files')('./server/config');
 // const util = require('../util');
@@ -22,10 +20,7 @@ module.exports = function(options) {
         );
       }
 
-      const url = imageUrlObject.url;
-      const request = url.startsWith('https') ? https : http;
-
-      request.get(url, function(response) {
+      function writeToS3(response) {
         if (response.statusCode !== 200) {
           return resolve(
             new Error(`Expected status 200 and got ${response.statusCode}`)
@@ -48,8 +43,10 @@ module.exports = function(options) {
           }
           return resolve(imageUrlObject);
         });
-      });
+      }
 
+      const url = imageUrlObject.url;
+      request.get(url).on('response', writeToS3);
     });
   }
 

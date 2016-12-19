@@ -24,6 +24,7 @@
     "morgan": "^1.7.0",
     "node-config-files": "^1.0.0",
     "nodemon": "^1.11.0",
+    "request": "^2.79.0",
     "request-url-open-graph": "^1.1.0",
     "validator": "^6.2.0"
   },
