@@ -32,6 +32,8 @@ const OGraphSchema = new Schema(
           msg: '{PATH} is not valid'
         }
       },
+      hash_url: String,
+      s3_object_key: String,
       secure_url: {
         type: String,
         validate: {
