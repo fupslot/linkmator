@@ -5,14 +5,14 @@ const crypto = require('crypto');
 module.exports.getImageUrlObject = function(url) {
   const hash = crypto.createHash('sha256');
   hash.update(url, 'utf8');
-  const hashUrl = hash.digest('hex');
+  const hash_url = hash.digest('hex');
 
   const hostname = Url.parse(url).hostname;
 
   return {
     url,
-    hashUrl,
+    hash_url,
     hostname,
-    s3ObjectKey: `${hostname}/${hashUrl}`
+    s3_object_key: `${hostname}/${hash_url}`
   };
 };

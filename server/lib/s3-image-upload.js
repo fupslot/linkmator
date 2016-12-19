@@ -36,7 +36,7 @@ module.exports = function(options) {
 
         var params = {
           Bucket: options.bucket,
-          Key: imageUrlObject.s3ObjectKey,
+          Key: imageUrlObject.s3_object_key,
           Body: response,
           ContentType: response.headers['content-type'],
           ContentLength: response.headers['content-length']
@@ -46,7 +46,7 @@ module.exports = function(options) {
           if (err) {
             return resolve(err);
           }
-          return resolve({key: imageUrlObject.s3ObjectKey});
+          return resolve(imageUrlObject);
         });
       });
 

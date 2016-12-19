@@ -42,21 +42,27 @@ router.post('/api/og', function(oReq, oRes) {
           bucket: config.common.s3.bucket
         });
 
-        oOGraph.image.map(function(image) {
-          const imageUrlObject = util.getImageUrlObject(image.url);
-          image.hash_url = imageUrlObject.hashUrl;
-          image.s3_object_key = imageUrlObject.s3ObjectKey;
+        oOGraph.image.forEach(function(image) {
+          const imageUrlObject = Object.assign(
+            {},
+            image.toJSON(),
+            util.getImageUrlObject(image.url)
+          );
+
           promises.push(s3.upload(imageUrlObject));
-          return image;
         });
       }
 
-      promises.unshift(oOGraph.save());
       return Promise.all(promises);
     }).then(function(results) {
+      oOGraph.image = results.filter(function(result) {
+        return !(result instanceof Error);
+      });
+      return oOGraph.save();
+    }).then(function(model) {
       oRes.status(201).send({
         status: 201,
-        data: results[0].toJSON()
+        data: model.toJSON()
       });
     }).catch((oError) => {
       if (oError.name === 'ValidationError') {
