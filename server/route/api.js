@@ -3,7 +3,7 @@ const express = require('express');
 const requestUrlOpenGraph = require('request-url-open-graph');
 const validator = require('validator');
 const config = require('node-config-files')('./server/config');
-
+const util = require('../util');
 const router = express.Router();
 
 
@@ -35,35 +35,29 @@ router.post('/api/og', function(oReq, oRes) {
     const oOGraph = new OGraph(oTags);
 
     oOGraph.validate().then(() => {
-      return oOGraph.save();
-    }).then((oModel) => {
-      if (Array.isArray(oModel.image)) {
+      const promises = [];
+
+      if (Array.isArray(oOGraph.image)) {
         const s3 = require('../lib/s3-image-upload')({
           bucket: config.common.s3.bucket
         });
 
-        const uploadImages = [oModel];
-
-        for (var i = 0; i < oModel.image.length; i++) {
-          uploadImages.push(s3.upload(oModel.image[i].url));
-        }
-
-        return Promise.all(uploadImages);
-      } else {
-        return oModel;
+        oOGraph.image.map(function(image) {
+          const imageUrlObject = util.getImageUrlObject(image.url);
+          image.hash_url = imageUrlObject.hashUrl;
+          image.s3_object_key = imageUrlObject.s3ObjectKey;
+          promises.push(s3.upload(imageUrlObject));
+          return image;
+        });
       }
+
+      promises.unshift(oOGraph.save());
+      return Promise.all(promises);
     }).then(function(results) {
-      if (Array.isArray(results)) {
-        oRes.status(201).send({
-          status: 201,
-          data: results[0].toJSON()
-        });
-      } else {
-        oRes.status(201).send({
-          status: 201,
-          data: results.toJSON()
-        });
-      }
+      oRes.status(201).send({
+        status: 201,
+        data: results[0].toJSON()
+      });
     }).catch((oError) => {
       if (oError.name === 'ValidationError') {
         oRes.sendValidationModelError(oError);

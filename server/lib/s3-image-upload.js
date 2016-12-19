@@ -1,10 +1,11 @@
 'use strict';
-const Url = require('url');
+// const Url = require('url');
 const http = require('http');
 const https = require('https');
 const AWS = require('aws-sdk');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const config = require('node-config-files')('./server/config');
+// const util = require('../util');
 
 module.exports = function(options) {
   const awsConfig = new AWS.Config({
@@ -13,14 +14,15 @@ module.exports = function(options) {
     region: config.common.s3.region
   });
 
-  function upload(url) {
+  function upload(imageUrlObject) {
     return new Promise(function(resolve) {
-      if (typeof url !== 'string') {
+      if (typeof imageUrlObject.url !== 'string') {
         return resolve(
           new TypeError(`Expect "url" to be string and got ${typeof url}`)
         );
       }
 
+      const url = imageUrlObject.url;
       const request = url.startsWith('https') ? https : http;
 
       request.get(url, function(response) {
@@ -30,21 +32,11 @@ module.exports = function(options) {
           );
         }
 
-        const hash = crypto.createHash('sha256');
-        hash.update(url, 'utf8');
-        const hashUrl = hash.digest('hex');
-
-        const contentType = response.headers['content-type'];
-        const fileType = contentType.substr(contentType.indexOf('/') + 1, contentType.length);
-
-        const parseUrl = Url.parse(url);
-        const key = `${parseUrl.hostname}/${hashUrl}.${fileType}`;
-
         const s3 = new AWS.S3(awsConfig);
 
         var params = {
           Bucket: options.bucket,
-          Key: key,
+          Key: imageUrlObject.s3ObjectKey,
           Body: response,
           ContentType: response.headers['content-type'],
           ContentLength: response.headers['content-length']
@@ -54,7 +46,7 @@ module.exports = function(options) {
           if (err) {
             return resolve(err);
           }
-          return resolve({key});
+          return resolve({key: imageUrlObject.s3ObjectKey});
         });
       });
 
