@@ -1,10 +1,10 @@
 'use strict';
 const colors = require('colors/safe');
-const OpenGraphModel = require('./model/ograph');
-const ImageObjectModel = require('./model/imageobject');
+const OpenGraphModel = require('../model/opengraph');
+const ImageObjectModel = require('../model/imageobject');
 const config = require('node-config-files')('./server/config');
 
-console.log(colors.yellow(`Dropping DB: ${config.env.mongo.uri}`));
+console.log(colors.yellow(`Seeding DB: ${config.env.mongo.uri}`));
 
 OpenGraphModel.remove({}, function(error) {
   console.log(

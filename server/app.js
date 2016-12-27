@@ -29,10 +29,9 @@ if (env !== 'production') {
 }
 
 // Routes
-app.use(require('./route/api'));
+app.use(require('./route/og'));
 
 app.on('stormpath.ready', function() {
-  console.log('Stormpath: ready');
   app.listen(port, hostname, () => {
     console.log(colors.green(`S3 Bucket: ${config.common.s3.bucket}`));
     console.log(colors.green(`S3 Region: ${config.common.s3.region}`));

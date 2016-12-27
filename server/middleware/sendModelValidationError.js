@@ -2,7 +2,7 @@
 const pick = require('lodash/pick');
 
 module.exports = function(req, res, next) {
-  res.sendValidationModelError = function(oError) {
+  res.sendModelValidationError = function(oError) {
     const aErrors = [];
 
     for (const prop in oError.errors) {

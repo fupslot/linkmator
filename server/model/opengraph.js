@@ -2,7 +2,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
-const OGraphSchema = new Schema(
+const util = require('../util');
+
+const OpenGraphSchema = new Schema(
   {
     url: {
       type: String,
@@ -13,6 +15,12 @@ const OGraphSchema = new Schema(
         msg: '{PATH} is not valid'
       }
     },
+
+    url_hash: {
+      type: String,
+      index: true
+    },
+
     title: {
       type: String,
       required: true
@@ -36,4 +44,12 @@ const OGraphSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('OGraphObject', OGraphSchema);
+
+OpenGraphSchema.pre('save', function(next) {
+  if (!this.url_hash) {
+    this.url_hash = util.getStringHash(this.url);
+  }
+  next();
+});
+
+module.exports = mongoose.model('OpenGraph', OpenGraphSchema);

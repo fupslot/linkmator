@@ -6,22 +6,22 @@ mongoose.Promise = global.Promise;
 
 module.exports = (oConfig) => {
   const {
-    uri: sUri,
-    options: oOptions
+    uri: uri,
+    options: options
   } = oConfig.env.mongo;
 
-  mongoose.connect(sUri, oOptions, function(oError) {
-    if (oError) {
+  mongoose.connect(uri, options, function(error) {
+    if (error) {
       console.log(colors.red('Database: failed'));
-      console.log(colors.red(`Database: ${oError.message}`));
+      console.log(colors.red(`Database: ${error.message}`));
       process.exit(1);
     }
 
     console.log(colors.green('Database: ready'));
-    console.log(colors.green(`Database: ${sUri}`));
+    console.log(colors.green(`Database: ${uri}`));
 
     if (oConfig.common.server.env === 'test') {
-      require('../dropdb');
+      require('./seedb');
     }
   });
 };
