@@ -41,4 +41,27 @@ describe('HTTP Server', function() {
         });
     });
   });
+
+  describe('Signin', function() {
+    it('should create a person when registered', function(done) {
+      const handler = require('../server/middleware/postRegistrationHandler');
+      const account = {
+        username: 'test@example.com',
+        email: 'test@example.com',
+        href: 'link_to_stormpath_account',
+        givenName: 'Test',
+        surname: 'Test',
+        customData: {
+          save: expect.createSpy().andCall((fn) => fn())
+        }
+      };
+
+      handler(account, undefined, undefined, (error, model) => {
+        expect(error).toEqual(null);
+        expect(account.customData.mongoId).toExist();
+        expect(account.customData.save).toHaveBeenCalled();
+        done();
+      });
+    });
+  });
 });

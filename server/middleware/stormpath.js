@@ -1,22 +1,21 @@
 'use strict';
 const stormpath = require('express-stormpath');
 
-module.exports = function(app, oConfig) {
-  const oSettings = {};
-
-  oSettings.application = {
-    href: oConfig.env.stormpath.app_href
-  };
-
-  oSettings.web = {
-    login: {
-      nextUri: '/app'
+module.exports = function(app, config) {
+  const settings = {
+    application: {
+      href: config.env.stormpath.app_href
     },
 
-    logout: {
-      nextUri: '/login'
-    }
+    web: {
+      login: { nextUri: '/app' },
+      logout: { nextUri: '/login' }
+    },
+
+    expand: { customData: true },
+
+    postRegistrationHandler: require('./postRegistrationHandler')
   };
 
-  return stormpath.init(app, oSettings);
+  return stormpath.init(app, settings);
 };
