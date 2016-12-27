@@ -16,7 +16,7 @@ module.exports = function(app, oConfig) {
   router.use('/api/*', stormpath.loginRequired);
 
   router.use(require('./commonError'));
-  router.use(require('./sendValidationModelError'));
+  router.use(require('./sendModelValidationError'));
   router.use(require('./sendServerError'));
 
   return router;
