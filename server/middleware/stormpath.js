@@ -8,11 +8,22 @@ module.exports = function(app, config) {
     },
 
     web: {
-      login: { nextUri: '/app' },
-      logout: { nextUri: '/login' }
+      login: {
+        nextUri: '/app'
+      },
+      logout: {
+        nextUri: '/login'
+      },
+      me: {
+        expand: {
+          customData: true
+        }
+      }
     },
 
-    expand: { customData: true },
+    expand: {
+      customData: true
+    },
 
     postRegistrationHandler: require('./postRegistrationHandler')
   };
