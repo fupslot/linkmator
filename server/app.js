@@ -31,6 +31,7 @@ if (env !== 'production') {
 
 // Routes
 app.use(require('./route/og'));
+app.use(require('./route/feed'));
 
 app.on('stormpath.ready', function() {
   app.listen(port, hostname, () => {

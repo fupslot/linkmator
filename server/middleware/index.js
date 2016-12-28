@@ -18,6 +18,7 @@ module.exports = function(app, oConfig) {
   router.use(require('./commonError'));
   router.use(require('./sendModelValidationError'));
   router.use(require('./sendServerError'));
+  router.use(require('./errorHandlers'));
 
   return router;
 };
