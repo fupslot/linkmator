@@ -4,16 +4,19 @@ const request = require('supertest');
 const expect = require('expect');
 const util = require('./util');
 
-describe('HTTP Server', function() {
+describe.only('HTTP Server', function() {
   this.timeout(20000);
 
   before(util.waitUntilServerIsReady);
 
   describe('POST /api/og', function() {
+
     it('"url" should be required', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
+
       request(this.server)
         .post('/api/og')
-        .set('Cookie', `access_token=${this.accessToken}`)
+        .set('Cookie', `access_token=${accessToken}`)
         .send({})
         .expect(400)
         .end(function(err, req, res) {
@@ -26,9 +29,11 @@ describe('HTTP Server', function() {
     });
 
     it('should create a graph with minimun data', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
+
       request(this.server)
         .post('/api/og')
-        .set('Cookie', `access_token=${this.accessToken}`)
+        .set('Cookie', `access_token=${accessToken}`)
         .send({
           url: 'http://www.example.com'
         })
@@ -42,7 +47,7 @@ describe('HTTP Server', function() {
     });
   });
 
-  describe('Signin', function() {
+  describe('Post registration', function() {
     it('should create a person when registered', function(done) {
       const handler = require('../server/middleware/postRegistrationHandler');
       const account = {

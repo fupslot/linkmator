@@ -11,6 +11,7 @@ require('dotenv').config({
 });
 
 const config = require('node-config-files')('./server/config');
+app.set('appConfig', config);
 
 const {
   env,
