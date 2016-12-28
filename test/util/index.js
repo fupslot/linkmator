@@ -28,14 +28,20 @@ module.exports.waitUntilServerIsReady = function() {
     server.on('application.ready', resolve);
   })).then(function() {
     return new Promise(function(resolve, reject) {
+      const appConfig = server.get('appConfig');
+      const {
+        test_user_name,
+        test_user_password
+      } = appConfig.common.server;
+
       request(server)
         .post('/login')
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .send({
           grand_type: 'password',
-          username: 'fupslot@gmail.com',
-          password: 'C1cer0mq'
+          username: test_user_name,
+          password: test_user_password
         })
         .end(function(err, req, res) {
           if (err) {
@@ -46,7 +52,12 @@ module.exports.waitUntilServerIsReady = function() {
           self.config = require('node-config-files')('./server/config');
 
           if (!self.accessToken) {
-            reject();
+            reject(
+              new Error(
+                `Wrong credentials for the user ${test_user_name}.
+                 Perhaps ${test_user_name} doesn't exist in Stormpath`
+              )
+            );
           } else {
             resolve();
           }
