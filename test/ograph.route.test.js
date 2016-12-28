@@ -5,6 +5,7 @@ const expect = require('expect');
 const util = require('./util');
 const mongoose = require('mongoose');
 const Feed = require('../server/model/feed');
+const OpenGraph = require('../server/model/opengraph');
 
 describe.only('HTTP Server', function() {
   this.timeout(20000);
@@ -49,7 +50,7 @@ describe.only('HTTP Server', function() {
     });
   });
 
-  describe('POST /api/feed', function() {
+  describe.only('POST /api/feed', function() {
     it('"data" should exist', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
@@ -75,17 +76,31 @@ describe.only('HTTP Server', function() {
         .expect(400)
         .end(done);
     });
+
     // Note: Need Seed Data
-    // it('should create a feed item', function(done) {
-    //   request(this.server)
-    //     .post('/api/feed')
-    //     .set('Cookie', `access_token=${this.accessToken}`)
-    //     .send({
-    //       data: {
-    //         open_graph_id: mongoose
-    //       }
-    //     })
-    // });
+    it('should create a feed item', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
+
+      OpenGraph.findOne({
+        url: 'http://www.example.com'
+      }).then((graph) => {
+
+        request(this.server)
+          .post('/api/feed')
+          .set('Cookie', `access_token=${accessToken}`)
+          .send({
+            data: {
+              open_graph_id: graph.id
+            }
+          })
+          .expect(201)
+          .end((error, req, res) => {
+            expect(error).toNotExist();
+            expect(req.body.data.feed_id).toExist();
+            done();
+          });
+      }).catch(done);
+    });
   });
 
   describe('Model: Feed', function() {
