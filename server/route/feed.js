@@ -5,6 +5,8 @@ const validator = require('validator');
 const OpenGraph = require('../model/opengraph');
 const Feed = require('../model/feed');
 const ValidationError = require('mongoose/lib/error/validation');
+const libData = require('../lib/data');
+const { isFeedType } = require('../lib/validate');
 
 /**
  * POST /api/feed
@@ -59,7 +61,32 @@ router.post('/api/feed', (req, res) => {
       res.sendServerError(error);
     }
   });
+});
 
+router.get('/api/feed', function(req, res) {
+  const currentUserId = req.user.customData.mongoId;
+
+  const type = req.query.type;
+
+  if (type && !isFeedType(type)) {
+    return res.sendRequestError(
+      new Error('Invalid feed type value')
+    );
+  }
+
+  Promise.all([
+    libData.getPerson(currentUserId),
+    libData.getFeed(currentUserId, {type})
+  ]).then((models) => {
+    const STATUS = 200;
+    res.status(STATUS).json({
+      status: STATUS,
+      data: {
+        person: models[0],
+        feed: models[1]
+      }
+    });
+  }).catch(res.sendServerError);
 });
 
 module.exports = router;

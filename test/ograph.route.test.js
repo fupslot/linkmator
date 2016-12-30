@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const Feed = require('../server/model/feed');
 const OpenGraph = require('../server/model/opengraph');
 
-describe.only('HTTP Server', function() {
+describe('HTTP Server', function() {
   this.timeout(20000);
 
   before(util.waitUntilServerIsReady);
@@ -22,8 +22,8 @@ describe.only('HTTP Server', function() {
         .set('Cookie', `access_token=${accessToken}`)
         .send({})
         .expect(400)
-        .end(function(err, req, res) {
-          const data = req.body;
+        .end(function(err, res) {
+          const data = res.body;
           expect(data.status).toBe(400);
           expect(data.errors).toBeA('array');
           expect(data.errors[0].path).toBe('url');
@@ -41,8 +41,8 @@ describe.only('HTTP Server', function() {
           url: 'http://www.example.com'
         })
         .expect(201)
-        .end(function(err, req, res) {
-          const data = req.body.data;
+        .end(function(err, res) {
+          const data = res.body.data;
           expect(data).toBeA('object');
           expect(data._id).toExist();
           done();
@@ -50,7 +50,7 @@ describe.only('HTTP Server', function() {
     });
   });
 
-  describe.only('POST /api/feed', function() {
+  describe('POST /api/feed', function() {
     it('"data" should exist', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
@@ -58,8 +58,11 @@ describe.only('HTTP Server', function() {
         .post('/api/feed')
         .set('Cookie', `access_token=${accessToken}`)
         .send({})
-        .expect(400)
-        .end(done);
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body.status).toEqual(400);
+          done();
+        });
     });
 
     it('"open_graph_id" should have proper type', function(done) {
@@ -73,8 +76,11 @@ describe.only('HTTP Server', function() {
             open_graph_id: 'invalid value'
           }
         })
-        .expect(400)
-        .end(done);
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body.status).toEqual(400);
+          done();
+        });
     });
 
     // Note: Need Seed Data
@@ -94,14 +100,52 @@ describe.only('HTTP Server', function() {
             }
           })
           .expect(201)
-          .end((error, req, res) => {
+          .end((error, res) => {
             expect(error).toNotExist();
-            expect(req.body.data.feed_id).toExist();
+            expect(res.body.data.feed_id).toExist();
             done();
           });
       }).catch(done);
     });
   });
+
+
+  describe('GET /api/feed', function() {
+    it('should validate "type"', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
+
+      request(this.server)
+        .get('/api/feed?type=INVALID_VALUE')
+        .set('Cookie', `access_token=${accessToken}`)
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body.status).toEqual(400);
+          expect(res.body.errors).toExist();
+          done();
+        });
+    });
+
+
+    it('should return a fedd', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
+
+      request(this.server)
+        .get('/api/feed')
+        .set('Cookie', `access_token=${accessToken}`)
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body.status).toEqual(200);
+          expect(res.body.data).toExist();
+          // Note: Seed test data.
+          // expect(res.body.data.person).toExist();
+          // expect(res.body.data.feed).toExist();
+          // expect(res.body.data.feed).toBeA(Array);
+          expect(res.body.errors).toNotExist();
+          done();
+        });
+    });
+  });
+
 
   describe('Model: Feed', function() {
     it('should not accept custom "type"', (done) => {

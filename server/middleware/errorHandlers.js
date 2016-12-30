@@ -18,7 +18,7 @@ module.exports = function(req, res, next) {
       }]
     };
 
-    res.status(CODE_STATUS).json(data);
+    res.status(200).json(data);
   };
 
   next();
