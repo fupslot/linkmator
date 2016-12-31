@@ -1,0 +1,10 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    ".bin",
+    "node_modules/**/node_modules",
+    "client",
+    "docs"
+  ]
+}

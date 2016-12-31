@@ -1,9 +1,19 @@
+parser: babel-eslint
+
+plugins:
+  - react
+
 env:
   node: true
   es6: true
+  browser: true
+  shared-node-browser: true
 
 parserOptions:
   ecmaVersion: 2016
+
+ecmaFeatures:
+  modules: true
 
 rules:
   # Possible Errors
@@ -48,7 +58,7 @@ rules:
 
   # Strict Mode
   # http://eslint.org/docs/rules/#strict-mode
-  strict: [2, global]
+  # strict: [2, global]
 
   # Variables
   # http://eslint.org/docs/rules/#variables
@@ -118,6 +128,9 @@ rules:
   rest-spread-spacing: 2
   template-curly-spacing: 2
 
+  # React & JSX
+  'react/display-name': 0
+  'react/jsx-uses-react': 2
 globals:
   describe: false
   it: false
