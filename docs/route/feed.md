@@ -30,3 +30,23 @@ Response:
 - PUBLIC - can be visible by other users
 - PRIVATE - can't be visible by other users
 - SHARED - visibility can be granted
+
+#### GET /api/feed
+
+Returns the feed collection of a user. Sorted by `createdAt`
+
+
+##### Query Params
+- type - `PUBLIC`, `PRIVATE`. When no value specified all types will be returned.
+
+Response:
+
+```json
+{
+  "status": 200,
+  "data": {
+    "person": {},
+    "feed": []
+  }
+}
+```
