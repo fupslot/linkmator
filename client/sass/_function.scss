@@ -1,0 +1,30 @@
+/// Working in ems is annoying. Think in pixels by using this handy function, emCalc(#px)
+@function emCalc($pxWidth) {
+  @return $pxWidth / $em-base * 1em;
+}
+
+/// Is It Light?
+/// Checks the lightness of $color, and if it passes the $threshold of lightness,
+/// it returns the `$yes` color. Otherwise, it returns the `$no` color.
+/// Use this function to dynamically output a foreground color based on
+/// a given background color.
+///
+/// @param {color} $color - Color to check the lightness of.
+/// @param {color} $yes - Color to return if $color is light.
+/// @param {color} $no - Color to return if $color is dark.
+/// @param {percentage} $threshold - Threshold of lightness to check against.
+///
+/// @return The $yes color or $no color.
+@function isitlight(
+  $color,
+  $yes: $global-dark-text-color,
+  $no: $global-light-text-color,
+  $threshold: 60%
+) {
+  @if (lightness($color) > $threshold) {
+    @return $yes;
+  }
+  @else {
+    @return $no;
+  }
+}

@@ -7,18 +7,11 @@ var __svg__ = {
 };
 require('webpack-svgstore-plugin/src/helpers/svgxhr')(__svg__);
 
+require('./sass/style.scss');
 
-const SayHello = () => {
-  const onClick = () => {
-    console.log('Hello');
-  };
-
-  return (
-    <button onClick={onClick}>Hello</button>
-  );
-};
+import AppLayout from './js/layout/AppLayout.js';
 
 ReactDOM.render(
-  <SayHello></SayHello>,
+  <AppLayout />,
   document.getElementById('app')
 );

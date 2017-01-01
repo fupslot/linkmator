@@ -19,6 +19,7 @@
     "babel-loader": "^6.2.10",
     "babel-preset-react": "^6.16.0",
     "body-parser": "^1.15.2",
+    "classnames": "^2.2.5",
     "colors": "^1.1.2",
     "css-loader": "^0.26.1",
     "dotenv": "^2.0.0",

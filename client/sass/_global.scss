@@ -1,0 +1,82 @@
+// The default font-size is set to 100% of the browser style sheet (usually 16px)
+// for compatibility with browser-based text zoom or user-set defaults.
+$base-font-size: 100% !default;
+
+// This is the default html and body font-size for the base em value.
+
+// Since the typical default browser font-size is 16px, that makes the calculation for grid size.
+// If you want your base font-size to be a different size and not have it effect grid size too,
+// set the value of $em-base to $base-font-size ($em-base: $base-font-size;)
+$em-base: 16px !default;
+
+/// Set to `true` to enable antialiased type, using the `-webkit-font-smoothing` and `-moz-osx-font-smoothing` CSS properties.
+/// @type Boolean
+$body-antialiased: true !default;
+
+$global-padding: 1rem;
+
+$global-font-size: 1rem;
+$global-font-weight: normal;
+$global-line-height: 1.4;
+
+$global-radius: 2px;
+
+// Colors
+$white-color: white;
+$primary-color: #006064;
+$global-primary-color: $primary-color;
+$global-secondary-color: #00838F;
+$global-accent-color: #00E5FF;
+$global-dark-grey-color: #BDBDBD;
+
+$body-font-family: 'Open Sans', sans-serif;
+$body-font-color: $primary-color;
+$body-background: #F5F5F5;
+
+html {
+  box-sizing: border-box;
+  font-size: $global-font-size;
+}
+
+// Set box-sizing globally to handle padding and border widths
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+// Default body styles
+body {
+  margin: 0;
+  padding: 0;
+
+  background: $body-background;
+
+  font-family: $body-font-family;
+  font-weight: $global-font-weight;
+  line-height: $global-line-height;
+  color: $body-font-color;
+
+  @if ($body-antialiased) {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+img {
+  // Get rid of gap under images by making them display: inline-block; by default
+  display: inline-block;
+  vertical-align: middle;
+
+  // Grid defaults to get images and embeds to work properly
+  max-width: 100%;
+  height: auto;
+  -ms-interpolation-mode: bicubic;
+}
+
+// Make sure textarea takes on height automatically
+textarea {
+  height: auto;
+  min-height: 50px;
+  border-radius: $global-radius;
+}

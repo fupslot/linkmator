@@ -1,0 +1,16 @@
+$topbar-height: 64px;
+
+%topbar {
+  display: inline-block;
+  height: $topbar-height;
+  width: 100%;
+  background-color: $primary-color;
+}
+
+@mixin topbar() {
+  @extend %topbar;
+}
+
+.Topbar {
+  @include topbar();
+}

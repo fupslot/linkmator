@@ -4,6 +4,7 @@ html(lang=en)
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     title Linkmator (#{config.env})
+    script(type="text/javascript" src="http://cdn.polyfill.io/v2/polyfill.min.js?features=fetch|gated")
   body
     #app
     if config.env !== 'production'
