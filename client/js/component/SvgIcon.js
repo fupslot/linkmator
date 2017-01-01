@@ -5,7 +5,7 @@ const DEFAULT_SIZE = 'small';
 
 const SIZES = {
   'small': { width: '16px', height: '16px'},
-  'regular': { width: '24px', height: '24px'}
+  'normal': { width: '24px', height: '24px'}
 };
 
 export default function SvgIcon(props) {

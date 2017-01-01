@@ -46,3 +46,11 @@ $feed-article-desc-font-size: 1em;
       margin-left: emCalc(5px);
     }
   }
+
+.FeedArticle__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  padding: 12px;
+  padding-top: 0;
+}

@@ -18,6 +18,16 @@ class FeedArticle extends React.Component {
     );
   }
 
+  renderFeedActions() {
+    return (
+      <div className="FeedArticle__actions">
+        <button className="IconButton">
+          <SvgIcon glyph="share" size="normal" />
+        </button>
+      </div>
+    );
+  }
+
   render() {
     return (
       <article className="FeedArticle">
@@ -33,6 +43,7 @@ class FeedArticle extends React.Component {
             { this.renderFeedDomain() }
           </a>
         </header>
+        { this.renderFeedActions() }
       </article>
     );
   }
