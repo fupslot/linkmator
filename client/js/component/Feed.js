@@ -24,7 +24,8 @@ export class Feed extends React.Component {
           key={i}
           url={og.url}
           title={og.title}
-          description={og.description}/>
+          hostname={og.hostname}
+          description={og.description} />
       );
     });
   }

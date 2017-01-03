@@ -3,6 +3,7 @@ import SvgIcon from './SvgIcon';
 
 class FeedArticle extends React.Component {
   renderFeedImage() {
+    // Not implemented yet
     return null;
     // return (
     //   <section className="FeedArticle__image">Image</section>
@@ -13,7 +14,7 @@ class FeedArticle extends React.Component {
     return (
       <p className="FeedArticle__domain">
         <SvgIcon glyph="globe" size="small" />
-        <span>scotch.io</span>
+        <span>{this.props.hostname}</span>
       </p>
     );
   }
@@ -52,6 +53,7 @@ class FeedArticle extends React.Component {
 FeedArticle.propTypes = {
   url: React.PropTypes.string,
   title: React.PropTypes.string,
+  hostname: React.PropTypes.string,
   description: React.PropTypes.string
 };
 

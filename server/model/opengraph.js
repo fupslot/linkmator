@@ -16,6 +16,11 @@ const OpenGraphSchema = new Schema(
       }
     },
 
+    hostname: {
+      type: String,
+      required: true
+    },
+
     url_hash: {
       type: String,
       index: true
