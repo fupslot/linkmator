@@ -30,11 +30,13 @@ OpenGraphModel.create(
   [
     {
       url: 'http://www.example.com',
-      title: 'Example Domain'
+      title: 'Example Domain',
+      hostname: 'example.com'
     },
     {
       url: 'http://schema.org/',
       title: 'Home - schema.org',
+      hostname: 'schema.org',
       description: 'Schema.org is a set of extensible schemas that enables webmasters to embed\n    structured data on their web pages for use by search engines and other applications.'
     }
   ]

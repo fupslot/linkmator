@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const requestUrlOpenGraph = require('request-url-open-graph');
 const colors = require('colors/safe');
 const util = require('util');
+const Url = require('url');
 
 const ImageObjectModel = require('../model/imageobject');
 const OpenGraphModel = require('../model/opengraph');
@@ -20,12 +21,13 @@ function fetchOpenGraphByURLFromWeb(url) {
       }
 
       graph._id = new mongoose.Types.ObjectId();
+      graph.hostname = Url.parse(graph.url).hostname;
 
       if (Array.isArray(graph.image)) {
         graph.image = graph.image.map((image) => new ImageUrlObject(image));
       }
 
-      resolve(graph);
+      return resolve(graph);
     }
 
     requestUrlOpenGraph({ url }, onRequest);
