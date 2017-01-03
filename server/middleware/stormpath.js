@@ -4,7 +4,7 @@ const stormpath = require('express-stormpath');
 module.exports = function(app, config) {
   const settings = {
     application: {
-      href: config.env.stormpath.app_href
+      href: config.common.stormpath.app_href
     },
 
     web: {

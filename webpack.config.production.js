@@ -1,9 +1,12 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SvgStore = require('webpack-svgstore-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const AssetsPlugin = require('assets-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const extractCSS = new ExtractTextPlugin('style.[chunkhash].css');
 
 module.exports = {
   context: __dirname,
@@ -11,21 +14,17 @@ module.exports = {
   cache: true,
 
   entry: {
-    app: [
-      './client/app.js',
-      'webpack/hot/dev-server',
-      'webpack-dev-server/client?http://localhost:3030/'
-    ],
+    app: ['./client/app.js'],
     vendor: ['react', 'react-dom', 'redux-thunk', 'redux-logger']
   },
 
   output: {
     path: path.resolve(__dirname, './.bin'),
-    filename: 'bundle.[name].js',
+    filename: '[name].[chunkhash].js',
     publicPath: '/static/'
   },
 
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
 
   module: {
     loaders: [
@@ -42,7 +41,7 @@ module.exports = {
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: ['style', 'css?sourceMap', 'postcss', 'sass?sourceMap']
+        loader: extractCSS.extract(['css', 'postcss', 'sass'])
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -67,6 +66,11 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
+    }),
+
     new SvgStore({
       prefix: 'glyph-',
       svgoOptions: {
@@ -74,14 +78,27 @@ module.exports = {
       }
     }),
 
-    new webpack.HotModuleReplacementPlugin(),
+    extractCSS,
 
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
+    new WebpackMd5Hash(),
+
+    new AssetsPlugin({
+      fullPath: false
     }),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
+
+    new webpack.optimize.OccurenceOrderPlugin(),
+
+    new webpack.optimize.DedupePlugin(),
+
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      sourceMap: false
+    })
   ]
 };
