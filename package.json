@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm run build",
     "start": "node server/app.js",
     "start-watch": "./node_modules/.bin/nodemon server/app.js",
     "debug": "./node_modules/.bin/nodemon -- debug server/app.js",
