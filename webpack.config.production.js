@@ -3,6 +3,7 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const SvgStore = require('webpack-svgstore-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
+const AssetsPlugin = require('assets-webpack-plugin');
 
 module.exports = {
   context: __dirname,
@@ -72,6 +73,10 @@ module.exports = {
     }),
 
     new WebpackMd5Hash(),
+
+    new AssetsPlugin({
+      fullPath: false
+    }),
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'
