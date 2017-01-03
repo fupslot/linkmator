@@ -1,5 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+import store from './js/store';
+import AppLayout from './js/layout/AppLayout';
+
 
 var __svg__ = {
   path: './svg/**/*.svg',
@@ -7,18 +12,12 @@ var __svg__ = {
 };
 require('webpack-svgstore-plugin/src/helpers/svgxhr')(__svg__);
 
+require('./sass/style.scss');
 
-const SayHello = () => {
-  const onClick = () => {
-    console.log('Hello');
-  };
-
-  return (
-    <button onClick={onClick}>Hello</button>
-  );
-};
 
 ReactDOM.render(
-  <SayHello></SayHello>,
+  <Provider store={store}>
+    <AppLayout />
+  </Provider>,
   document.getElementById('app')
 );

@@ -1,0 +1,11 @@
+.Sidebar {
+  width: 240px;
+  padding-right: 1em;
+  float: left;
+}
+
+@media screen and (max-width: $global-screen-mobile) {
+  .Sidebar {
+    display: none;
+  }
+}

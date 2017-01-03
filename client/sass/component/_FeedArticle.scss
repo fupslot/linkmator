@@ -1,0 +1,56 @@
+$feed-article-shadow-color1: rgba(189,189,189,0.44);
+$feed-article-shadow-color2: #BDBDBD;
+$feed-article-title-font-size: emCalc(20px);
+$feed-article-desc-font-size: 1em;
+
+.FeedArticle {
+  background: $white-color;
+  border: 1px solid $body-background;
+  box-shadow: -1px 1px 0 0 $feed-article-shadow-color1, 0 1px 2px 0 $feed-article-shadow-color2;
+  width: 100%;
+  margin-bottom: emCalc(20px);
+}
+
+.FeedArticle__link {
+  display: block;
+  text-decoration: none;
+}
+
+.FeedArticle__header {
+  font-family: inherit;
+  font-style: inherit;
+  padding: 12px;
+  margin-bottom: 0;
+}
+
+  .FeedArticle__title {
+    font-size: $feed-article-title-font-size;
+    font-weight: 400;
+    color: $primary-color;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .FeedArticle__description {
+    font-size: $feed-article-desc-font-size;
+    font-weight: 300;
+  }
+
+  .FeedArticle__domain {
+    color: $global-dark-grey-color;
+    font-size: emCalc(14px);
+    margin-bottom: 0;
+
+    & > span {
+      margin-left: emCalc(5px);
+    }
+  }
+
+.FeedArticle__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  padding: 12px;
+  padding-top: 0;
+}
