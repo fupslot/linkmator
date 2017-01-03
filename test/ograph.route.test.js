@@ -102,7 +102,7 @@ describe('HTTP Server', function() {
           .expect(201)
           .end((error, res) => {
             expect(error).toNotExist();
-            expect(res.body.data.feed_id).toExist();
+            expect(res.body.data.feed).toExist();
             done();
           });
       }).catch(done);
