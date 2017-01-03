@@ -1,4 +1,10 @@
 .Feed {
-  min-width: 500px;
-  padding: 0 1em;
+  max-width: 500px;
+  margin-left: 240px;
+}
+
+@media screen and (max-width: $global-screen-mobile) {
+  .Feed {
+    margin-left: 0;
+  }
 }

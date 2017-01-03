@@ -33,12 +33,12 @@ class FeedArticle extends React.Component {
       <article className="FeedArticle">
         { this.renderFeedImage() }
         <header className="FeedArticle__header">
-          <a className="FeedArticle__link" href="#" target="_blank">
+          <a className="FeedArticle__link" href={this.props.url} target="_blank">
             <h6 className="FeedArticle__title">
-              React Universal with Next.js: Server-side React
+              { this.props.title }
             </h6>
             <p className="FeedArticle__description">
-              The term ”universal” is a community-coined term for building web apps that render happily on a server. You might be familiar with ”isomorphic” as…
+              { this.props.description}
             </p>
             { this.renderFeedDomain() }
           </a>
@@ -48,5 +48,11 @@ class FeedArticle extends React.Component {
     );
   }
 }
+
+FeedArticle.propTypes = {
+  url: React.PropTypes.string,
+  title: React.PropTypes.string,
+  description: React.PropTypes.string
+};
 
 export default FeedArticle;

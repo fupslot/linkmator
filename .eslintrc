@@ -13,9 +13,11 @@ env:
 
 parserOptions:
   ecmaVersion: 2016
-
-ecmaFeatures:
-  modules: true
+  ecmaFeatures:
+    sourceType: module
+    impliedStrict: true
+    jsx: true
+    experimentalObjectRestSpread: true
 
 rules:
   # Possible Errors

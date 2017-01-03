@@ -5,6 +5,7 @@ $topbar-height: 64px;
   height: $topbar-height;
   width: 100%;
   background-color: $primary-color;
+  margin-bottom: 2em;
 }
 
 @mixin topbar() {
