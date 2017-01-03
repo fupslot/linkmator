@@ -4,6 +4,9 @@ const webpack = require('webpack');
 const SvgStore = require('webpack-svgstore-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const AssetsPlugin = require('assets-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const extractCSS = new ExtractTextPlugin('style.[chunkhash].css');
 
 module.exports = {
   context: __dirname,
@@ -38,7 +41,7 @@ module.exports = {
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        loaders: ['style', 'css?sourceMap', 'postcss', 'sass?sourceMap']
+        loader: extractCSS.extract(['css', 'postcss', 'sass'])
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -74,6 +77,8 @@ module.exports = {
         plugins: [{ removeTitle: true }]
       }
     }),
+
+    extractCSS,
 
     new WebpackMd5Hash(),
 
