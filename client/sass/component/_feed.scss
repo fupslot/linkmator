@@ -3,6 +3,10 @@
   margin-left: 240px;
 }
 
+.Feed > * {
+  margin-bottom: emCalc(20px);
+}
+
 @media screen and (max-width: $global-screen-mobile) {
   .Feed {
     margin-left: 0;

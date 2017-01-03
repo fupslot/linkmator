@@ -31,36 +31,42 @@ router.post('/api/feed', (req, res) => {
     );
   }
 
-  OpenGraph.findById(data.open_graph_id).then((graph) => {
-    if (!graph) {
-      return Promise.reject(
-        new Error(`graph ${data.open_graph_id} not found`)
-      );
-    }
+  const creatorId = req.user.customData.mongoId;
 
-    const feedData = {
-      creator: req.user.customData.mongoId,
-      type: data.type,
-      opengraph: graph.id
-    };
+  OpenGraph.findById(data.open_graph_id)
+    .then((graph) => {
+      if (!graph) {
+        return Promise.reject(
+          new Error(`graph ${data.open_graph_id} not found`)
+        );
+      }
 
-    return Feed.create(feedData);
-  }).then((feed) => {
-    const STATUS = 201;
-    res.status(STATUS).json({
-      status: STATUS,
-      data: {
-        feed_id: feed.id
+      const feedData = {
+        creator: creatorId,
+        type: data.type,
+        opengraph: graph.id
+      };
+
+      return Feed.create(feedData);
+    })
+    .then((model) => libData.getFeedById(creatorId, model._id))
+    .then((feed) => {
+      const STATUS = 201;
+      res.status(STATUS).json({
+        status: STATUS,
+        data: {
+          feed: feed.toJSON()
+        }
+      });
+    })
+    .catch((error) => {
+      if (error instanceof ValidationError) {
+        res.sendModelValidationError(error);
+      } else {
+        // Note: should be reported to a log system
+        res.sendServerError(error);
       }
     });
-  }).catch((error) => {
-    if (error instanceof ValidationError) {
-      res.sendModelValidationError(error);
-    } else {
-      // Note: should be reported to a log system
-      res.sendServerError(error);
-    }
-  });
 });
 
 router.get('/api/feed', function(req, res) {

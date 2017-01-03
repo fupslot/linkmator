@@ -27,7 +27,7 @@ router.post('/api/og', function(req, res) {
     });
   }
 
-  libGraph.fetchOpenGraphByURLFromDB(url).then((model) => {
+  return libGraph.fetchOpenGraphByURLFromDB(url).then((model) => {
     if (model) {
       return res.status(200).json({
         status: 200,
