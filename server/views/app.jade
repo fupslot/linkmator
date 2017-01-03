@@ -10,3 +10,6 @@ html(lang=en)
     if config.env !== 'production'
       script(type="text/javascript" src="/static/bundle.vendor.js")
       script(type="text/javascript" src="/static/bundle.app.js")
+    else
+      script(type="text/javascript" src="/static/#{assets.vendor.js}")
+      script(type="text/javascript" src="/static/#{assets.app.js}")

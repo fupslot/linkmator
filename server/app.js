@@ -31,8 +31,7 @@ require('./common/mongoose')(config);
 app.use(require('./middleware')(app, config));
 
 
-if ('development' === env || 'production' === env) {
-
+if ('development' === env) {
   const httpProxy = require('http-proxy');
   const proxy = httpProxy.createProxyServer();
 
@@ -56,6 +55,11 @@ if ('development' === env || 'production' === env) {
   });
 
   app.use(morgan('dev'));
+} else {
+  app.use(
+    '/static',
+    express.static(path.resolve(__dirname, '..', '.bin'))
+  );
 }
 
 // Routes
@@ -69,7 +73,8 @@ app.use('/app', stormpath.loginRequired, (req, res) => {
       env: config.common.server.env,
       hostname: config.common.server.hostname,
       port: config.common.server.port
-    }
+    },
+    assets: env === 'production' ? require('../webpack-assets.json') : null
   });
 });
 
