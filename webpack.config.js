@@ -16,7 +16,7 @@ module.exports = {
       'webpack/hot/dev-server',
       'webpack-dev-server/client?http://localhost:3030/'
     ],
-    vendor: ['react', 'react-dom']
+    vendor: ['react', 'react-dom', 'redux-thunk', 'redux-logger']
   },
 
   output: {

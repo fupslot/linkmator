@@ -15,7 +15,7 @@ module.exports = {
 
   entry: {
     app: ['./client/app.js'],
-    vendor: ['react', 'react-dom', 'react-redux']
+    vendor: ['react', 'react-dom', 'redux-thunk', 'redux-logger']
   },
 
   output: {
@@ -24,7 +24,7 @@ module.exports = {
     publicPath: '/static/'
   },
 
-  devtool: 'eval',
+  devtool: 'cheap-module-source-map',
 
   module: {
     loaders: [
