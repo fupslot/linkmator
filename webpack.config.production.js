@@ -11,9 +11,7 @@ module.exports = {
   cache: true,
 
   entry: {
-    app: [
-      './client/app.js'
-    ],
+    app: ['./client/app.js'],
     vendor: ['react', 'react-dom', 'react-redux']
   },
 
@@ -65,6 +63,11 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
+    }),
+
     new SvgStore({
       prefix: 'glyph-',
       svgoOptions: {
@@ -78,12 +81,19 @@ module.exports = {
       fullPath: false
     }),
 
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    }),
-
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
+
+    new webpack.optimize.OccurenceOrderPlugin(),
+
+    new webpack.optimize.DedupePlugin(),
+
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      sourceMap: false
+    })
   ]
 };
