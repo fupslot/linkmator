@@ -1,0 +1,62 @@
+%button {
+  background-color: $global-secondary-color;
+  color: $white-color;
+  padding: 5px 12px;
+  appearance: none;
+  border: 1px solid $global-primary-color;
+  display: inline-block;
+}
+
+.Linkmator {
+  max-width: 500px;
+  margin-left: 240px;
+  margin-bottom: emCalc(20px);
+}
+
+  .Linkmator__graphform,
+  .Linkmator__form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .Linkmator__graphtitle {
+    display: block;
+    margin-bottom: 1em;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 1.5em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .Linkmator__graphfield {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0.35em 0.625em 0.75em;
+    border: 1px solid #E0E0E0;
+    background-color: #EEEEEE;
+    width: 100%;
+    
+    & > .FeedArticle {
+      margin-bottom: 1em;
+    }
+  }
+
+  .Linkmator__input {
+    display: block;
+    width: 100%;
+    resize: none;
+    margin-bottom: .5em;
+    padding: .5em;
+    border-radius: 2px;
+    border: 1px solid $global-secondary-color
+  }
+
+  .Linkmator__button {
+    @extend %button;
+  }

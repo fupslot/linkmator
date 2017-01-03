@@ -16,7 +16,7 @@ module.exports = function(req, res, next) {
       errors: aErrors
     };
 
-    res.status(400).json(data);
+    res.status(200).json(data);
   };
 
   next();
