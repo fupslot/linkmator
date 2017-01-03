@@ -52,6 +52,7 @@
     "validator": "^6.2.0",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2",
+    "webpack-md5-hash": "0.0.5",
     "webpack-svgstore-plugin": "^3.0.6"
   },
   "devDependencies": {
