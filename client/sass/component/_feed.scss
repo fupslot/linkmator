@@ -1,14 +1,7 @@
 .Feed {
-  max-width: 500px;
-  margin-left: 240px;
+  width: 100%;
 }
 
 .Feed > * {
   margin-bottom: emCalc(20px);
-}
-
-@media screen and (max-width: $global-screen-mobile) {
-  .Feed {
-    margin-left: 0;
-  }
 }

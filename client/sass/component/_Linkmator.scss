@@ -8,8 +8,7 @@
 }
 
 .Linkmator {
-  max-width: 500px;
-  margin-left: 240px;
+  width: 100%;
   margin-bottom: emCalc(20px);
 }
 
@@ -41,7 +40,7 @@
     border: 1px solid #E0E0E0;
     background-color: #EEEEEE;
     width: 100%;
-    
+
     & > .FeedArticle {
       margin-bottom: 1em;
     }

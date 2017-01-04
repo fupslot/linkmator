@@ -1,12 +1,10 @@
 .AppLayout {
   margin-top: 1em;
-  margin: 0 auto;
-  width: 1014px;
+  width: 100%;
 }
 
 @media screen and (max-width: $global-screen-mobile) {
   .AppLayout {
-    width: 100%;
     padding: 0 emCalc(5px);
   }
 }
