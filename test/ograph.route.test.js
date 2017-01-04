@@ -15,15 +15,50 @@ describe('HTTP Server', function() {
   before(testUtil.waitUntilServerIsReady);
 
   describe('POST /api/og', function() {
+    it('url shold not allowed html tags', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
 
-    it('"url" should be required', function(done) {
+      const url = '<script src="http://bad-host.com/script.js">';
+
+      request(this.server)
+        .post('/api/og')
+        .set('Cookie', `access_token=${accessToken}`)
+        .send({url})
+        .end(function(err, res) {
+          const data = res.body;
+          expect(data.status).toBe(400);
+          expect(data.errors).toBeAn(Array);
+          expect(data.errors[0].path).toEqual('url');
+          done();
+        });
+    });
+
+    it('url shold be sanitized', function(done) {
+      const accessToken = this.server.get('ACCESS_TOKEN');
+
+      const rawUrl = 'Http://www.ExaMplE.cOm';
+      const url = 'http://www.example.com';
+
+      request(this.server)
+        .post('/api/og')
+        .set('Cookie', `access_token=${accessToken}`)
+        .send({ url: rawUrl })
+        .end(function(err, res) {
+          const data = res.body;
+          expect(data.status).toBe(200);
+          expect(data.errors).toNotExist();
+          expect(data.data.url).toEqual(url);
+          done();
+        });
+    });
+
+    it('url should be required', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       request(this.server)
         .post('/api/og')
         .set('Cookie', `access_token=${accessToken}`)
         .send({})
-        .expect(400)
         .end(function(err, res) {
           const data = res.body;
           expect(data.status).toBe(400);

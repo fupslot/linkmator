@@ -2,21 +2,32 @@
 const pick = require('lodash/pick');
 
 module.exports = function(req, res, next) {
-  res.sendModelValidationError = function(oError) {
-    const aErrors = [];
+  res.sendModelValidationError = function(path, message, value) {
+    const errors = [];
 
-    for (const prop in oError.errors) {
-      const error = pick(oError.errors[prop], ['path', 'message', 'value']);
-      aErrors.push(error);
+    if (arguments.length === 1) {
+      const data = path;
+
+      if (data && typeof data.errors === 'object') {
+        for (const prop in data.errors) {
+          errors.push(
+            pick(data.errors[prop], ['path', 'message', 'value'])
+          );
+        }
+      } else {
+        throw new Error('errors object not found');
+      }
+    } else if (arguments.length === 3) {
+      errors.push({path, message, value});
+    } else {
+      throw new Error('function expects 1 or 3 arguments');
     }
 
-    const data = {
+    res.status(200).json({
       name: 'ValidationError',
       status: 400,
-      errors: aErrors
-    };
-
-    res.status(200).json(data);
+      errors: errors
+    });
   };
 
   next();
