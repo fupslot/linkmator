@@ -36,3 +36,7 @@ module.exports.createGravatarUrl = (emailMd5Hash) => {
   const {gravatarUrl} = config.common.server;
   return `${gravatarUrl}/${emailMd5Hash}?d=identicon`;
 };
+
+module.exports.toLowerCase = (text) => {
+  return String.prototype.toLowerCase.call(text);
+};

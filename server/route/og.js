@@ -2,9 +2,9 @@
 const express = require('express');
 const validator = require('validator');
 
-// const OpenGraphObject = require('../lib/OpenGraphObject');
-// const OpenGraph = require('../lib/OpenGraph');
+
 const libGraph = require('../lib/graph');
+const util = require('../util');
 
 const router = express.Router();
 
@@ -13,15 +13,29 @@ const router = express.Router();
  */
 router.post('/api/og', function(req, res) {
   const data = req.body;
-  const url = data.url || '';
+  let url = data.url || '';
+
+  try {
+    url = util.toLowerCase(validator.trim(url));
+  } catch (error) {
+    return res.sendModelValidationError({
+      errors: {
+        url: {
+          path: 'url',
+          message: 'url must be valid',
+          value: url
+        }
+      }
+    });
+  }
 
   if (!validator.isURL(url)) {
     return res.sendModelValidationError({
       errors: {
         url: {
           path: 'url',
-          message: '"url" must be valid',
-          value: url
+          message: 'url must be valid',
+          value: validator.escape(url)
         }
       }
     });
