@@ -10,7 +10,11 @@ const Person = new Schema(
     },
     href: String,
     givenName: String,
-    surname: String
+    surname: String,
+
+    // Gravatar
+    gravatarUrl: String,
+    emailMd5Hash: String
   },
   {
     timestamps: true
