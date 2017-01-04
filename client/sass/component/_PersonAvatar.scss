@@ -1,5 +1,19 @@
-.PersonAvatar {}
+$person-avatart-size: 42px;
+
+.PersonAvatar {
+  @include clearfix();
+}
+
 .PersonAvatar__name {
   color: $global-primary-color;
   font-weight: 600;
+  margin-left: $person-avatart-size + 6px;
+}
+
+.PersonAvatar__image {
+  border-radius: 50%;
+  border: 2px solid white;
+  float: left;
+  width: $person-avatart-size;
+  height: $person-avatart-size;
 }

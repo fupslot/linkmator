@@ -15,7 +15,7 @@ module.exports = {
 
   entry: {
     app: ['./client/app.js'],
-    vendor: ['react', 'react-dom', 'redux-thunk', 'redux-logger']
+    vendor: ['react', 'react-dom', 'redux-thunk', 'redux-logger', 'react-tap-event-plugin']
   },
 
   output: {

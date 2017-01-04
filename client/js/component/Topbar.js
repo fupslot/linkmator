@@ -1,13 +1,16 @@
 'use strict';
 import React from 'react';
 
-class Topbar extends React.Component {
+export class Topbar extends React.Component {
   render() {
     return (
       <div className="Topbar">
         <svg className="Logo">
           <use xlinkHref="#glyph-logo" />
         </svg>
+        <form method="POST" action="/logout">
+          <button>Logout</button>
+        </form>
       </div>
     );
   }

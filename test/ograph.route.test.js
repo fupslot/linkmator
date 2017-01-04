@@ -2,15 +2,17 @@
 
 const request = require('supertest');
 const expect = require('expect');
-const util = require('./util');
 const mongoose = require('mongoose');
+
+const util = require('../server/util');
+const testUtil = require('./util');
 const Feed = require('../server/model/feed');
 const OpenGraph = require('../server/model/opengraph');
 
 describe('HTTP Server', function() {
   this.timeout(20000);
 
-  before(util.waitUntilServerIsReady);
+  before(testUtil.waitUntilServerIsReady);
 
   describe('POST /api/og', function() {
 
@@ -178,8 +180,11 @@ describe('HTTP Server', function() {
   });
 
   describe('Post registration', function() {
-    it('should create a person when registered', function(done) {
-      const handler = require('../server/middleware/postRegistrationHandler');
+    it('should create a person record', function(done) {
+      const postRegistrationHandler = require(
+        '../server/middleware/postRegistrationHandler'
+      );
+
       const account = {
         username: 'test@example.com',
         email: 'test@example.com',
@@ -191,12 +196,24 @@ describe('HTTP Server', function() {
         }
       };
 
-      handler(account, undefined, undefined, (error, model) => {
-        expect(error).toEqual(null);
+      const next = () => {
         expect(account.customData.mongoId).toExist();
         expect(account.customData.save).toHaveBeenCalled();
-        done();
-      });
+      };
+
+      postRegistrationHandler(account, undefined, undefined, next)
+        .then((model) => {
+          // Should create Gravatar image url
+          // See: http://en.gravatar.com/site/implement/images/
+          const emailMd5Hash = util.getMD5Hash(account.email);
+          expect(model.emailMd5Hash).toEqual(emailMd5Hash);
+          expect(model.gravatarUrl).toEqual(
+            util.createGravatarUrl(emailMd5Hash)
+          );
+
+          done();
+        })
+        .catch(done);
     });
   });
 });
