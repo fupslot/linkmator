@@ -37,6 +37,7 @@ $feed-article-desc-font-size: 1em;
   }
 
   .FeedArticle__domain {
+    @include text-overflow();
     color: $global-dark-grey-color;
     font-size: emCalc(14px);
     margin-bottom: 0;

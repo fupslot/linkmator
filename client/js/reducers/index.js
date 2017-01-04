@@ -11,6 +11,7 @@ import {
   POST_GRAPH,
   POST_GRAPH_SUCCESS,
   POST_GRAPH_FAILED,
+  POST_GRAPH_RESET,
 
   API_FATAL_ERROR
 } from '../actions';
@@ -98,6 +99,7 @@ function linkmator(state = linkmatorState, action) {
         isSaving: true,
       });
 
+    case POST_GRAPH_RESET:
     case POST_GRAPH_SUCCESS:
       return Object.assign({}, linkmatorState);
 

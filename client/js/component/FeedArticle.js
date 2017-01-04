@@ -1,5 +1,6 @@
 import React from 'react';
 import SvgIcon from './SvgIcon';
+import classNames from 'classnames';
 
 class FeedArticle extends React.Component {
   renderFeedImage() {
@@ -30,8 +31,10 @@ class FeedArticle extends React.Component {
   }
 
   render() {
+    const cx = classNames('FeedArticle', this.props.className);
+
     return (
-      <article className="FeedArticle">
+      <article className={cx}>
         { this.renderFeedImage() }
         <header className="FeedArticle__header">
           <a className="FeedArticle__link" href={this.props.url} target="_blank">
@@ -54,7 +57,8 @@ FeedArticle.propTypes = {
   url: React.PropTypes.string,
   title: React.PropTypes.string,
   hostname: React.PropTypes.string,
-  description: React.PropTypes.string
+  description: React.PropTypes.string,
+  className: React.PropTypes.string
 };
 
 export default FeedArticle;

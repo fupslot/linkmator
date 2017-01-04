@@ -11,6 +11,7 @@ export const SAVE_OPENGRAPH_SUCCESS = 'SAVE_OPENGRAPH_SUCCESS';
 export const POST_GRAPH = 'POST_GRAPH';
 export const POST_GRAPH_SUCCESS = 'POST_GRAPH_SUCCESS';
 export const POST_GRAPH_FAILED = 'POST_GRAPH_FAILED';
+export const POST_GRAPH_RESET = 'POST_GRAPH_RESET';
 
 export const API_FATAL_ERROR = 'API_FATAL_ERROR';
 
@@ -146,5 +147,17 @@ function postGraphFailed(errors) {
   return {
     type: POST_GRAPH_FAILED,
     errors
+  };
+}
+
+export function postGraphReset() {
+  return function(dispatch) {
+    dispatch(resetGraph());
+  };
+}
+
+function resetGraph() {
+  return {
+    type: POST_GRAPH_RESET
   };
 }
