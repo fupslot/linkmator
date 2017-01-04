@@ -18,27 +18,19 @@ router.post('/api/og', function(req, res) {
   try {
     url = util.toLowerCase(validator.trim(url));
   } catch (error) {
-    return res.sendModelValidationError({
-      errors: {
-        url: {
-          path: 'url',
-          message: 'url must be valid',
-          value: url
-        }
-      }
-    });
+    return res.sendModelValidationError(
+      'url',
+      'url must be valid',
+      url
+    );
   }
 
   if (!validator.isURL(url)) {
-    return res.sendModelValidationError({
-      errors: {
-        url: {
-          path: 'url',
-          message: 'url must be valid',
-          value: validator.escape(url)
-        }
-      }
-    });
+    return res.sendModelValidationError(
+      'url',
+      'url must be valid',
+      validator.escape(url)
+    );
   }
 
   return libGraph.fetchOpenGraphByURLFromDB(url).then((model) => {
