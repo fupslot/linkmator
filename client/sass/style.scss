@@ -8,9 +8,14 @@
 @import "global";
 @import "types";
 
+@import "grid";
+
 @import "topbar";
 
-@import "layout/applayout";
+// Layout
+@import "layout/AppLayout";
+
+// Components
 @import "component/sidebar";
 @import "component/feed";
 @import "component/IconButton";

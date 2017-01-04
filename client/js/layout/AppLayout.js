@@ -9,11 +9,17 @@ class AppLayout extends React.Component {
     return (
       <div>
         <TopBar />
-        <main className="AppLayout">
-          <Sidebar />
-          <Linkmator />
-          <Feed />
-        </main>
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12 col-lg-3">
+              <Sidebar />
+            </div>
+            <div className="col-xs-12 col-lg-6">
+              <Linkmator />
+              <Feed />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
