@@ -12,7 +12,11 @@ class Sidebar extends React.Component {
     const person = this.props.person;
     const fullName = `${person.givenName} ${person.surname}`;
 
-    return <PersonAvatar fullName={fullName} />;
+    return (
+      <PersonAvatar
+        fullName={fullName}
+        gravatarUrl={person.gravatarUrl} />
+    );
   }
 
   render() {

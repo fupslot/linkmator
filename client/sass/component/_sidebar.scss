@@ -1,7 +1,7 @@
 .Sidebar {
-  width: 240px;
-  padding-right: 1em;
   float: left;
+  padding: 0 1em;
+  width: 240px;
 }
 
 @media screen and (max-width: $global-screen-mobile) {
