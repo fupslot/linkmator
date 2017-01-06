@@ -18,14 +18,10 @@ export class Feed extends React.Component {
     }
 
     return this.props.items.map((item, i) => {
-      const og = item.opengraph;
       return (
         <FeedArticle
           key={i}
-          url={og.url}
-          title={og.title}
-          hostname={og.hostname}
-          description={og.description} />
+          model={item.opengraph} />
       );
     });
   }

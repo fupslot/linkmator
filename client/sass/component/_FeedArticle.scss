@@ -1,13 +1,22 @@
 $feed-article-shadow-color1: rgba(189,189,189,0.44);
 $feed-article-shadow-color2: #BDBDBD;
-$feed-article-title-font-size: emCalc(20px);
-$feed-article-desc-font-size: 1em;
+$feed-article-title-font-size: 1em;
+$feed-article-desc-font-size: 0.85em;
 
 .FeedArticle {
   background: $white-color;
   border: 1px solid $body-background;
   box-shadow: -1px 1px 0 0 $feed-article-shadow-color1, 0 1px 2px 0 $feed-article-shadow-color2;
   width: 100%;
+}
+
+.FeedArticle__image-container {
+
+}
+
+.FeedArticle__image {
+  display: block;
+  margin: 0 auto;
 }
 
 .FeedArticle__link {
@@ -34,6 +43,7 @@ $feed-article-desc-font-size: 1em;
   .FeedArticle__description {
     font-size: $feed-article-desc-font-size;
     font-weight: 300;
+    line-height: 1.4;
   }
 
   .FeedArticle__domain {
