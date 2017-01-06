@@ -72,7 +72,8 @@ app.use('/app', stormpath.loginRequired, (req, res) => {
     config: {
       env: config.common.server.env,
       hostname: config.common.server.hostname,
-      port: config.common.server.port
+      port: config.common.server.port,
+      cdnHost: config.common.server.cdnHost
     },
     assets: env === 'production' ? require('../webpack-assets.json') : null
   });

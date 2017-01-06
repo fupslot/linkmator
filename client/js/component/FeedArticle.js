@@ -16,7 +16,7 @@ class FeedArticle extends React.Component {
     const image = model.image[0];
 
     return (
-      <ImagePreloader url={image.url}>
+      <ImagePreloader url={image.s3_object_key}>
         {({url}) => {
           return (
             <div className="FeedArticle__image-container">

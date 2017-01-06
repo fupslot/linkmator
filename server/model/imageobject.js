@@ -13,6 +13,7 @@ const ImageObject = new Schema(
       index: true,
       required: true
     },
+    // s3_bucket - should be absolite
     s3_bucket: {
       type: String,
       required: true
@@ -21,10 +22,12 @@ const ImageObject = new Schema(
       type: String,
       required: true
     },
+    // protocol - should be absolite
     protocol: String,
     type: {
       type: String
     },
+    // width/hight - should be absolite
     width: String,
     height: String
   },

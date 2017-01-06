@@ -1,8 +1,8 @@
 import React from 'react';
 
 class ImagePreloader extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       url: null,
@@ -15,7 +15,9 @@ class ImagePreloader extends React.Component {
       'load',
       this._imgEventHandler.bind(this, img)
     );
-    img.src = props.url;
+
+    const {cdnHost} = this.context.config;
+    img.src = `${cdnHost}/${props.url}`;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -42,6 +44,10 @@ class ImagePreloader extends React.Component {
 ImagePreloader.propTypes = {
   url: React.PropTypes.string.isRequired,
   children: React.PropTypes.func.isRequired
+};
+
+ImagePreloader.contextTypes = {
+  config: React.PropTypes.object
 };
 
 export default ImagePreloader;
