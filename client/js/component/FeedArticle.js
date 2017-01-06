@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import SvgIcon from './SvgIcon';
 import ImagePreloader from './ImagePreloader';
+import ImageContainer from './ImageContainer';
 
 class FeedArticle extends React.Component {
   renderFeedImage() {
@@ -17,14 +18,20 @@ class FeedArticle extends React.Component {
 
     return (
       <ImagePreloader url={image.s3_object_key}>
-        {({url, width, height}) => {
+        {({url, width: imgWidth, height: iHeight}) => {
           return (
-              <div
-                className="FeedArticle__image-container"
-                style={{
-                  backgroundImage: `url(${url})`,
-                  height
-                }} />
+            <ImageContainer>
+              {({width: cWidth, height: cHeight}) => {
+                return (
+                  <div
+                    className="FeedArticle__image"
+                    style={{
+                      backgroundImage: `url(${url})`,
+                      height: iHeight
+                    }} />
+                );
+              }}
+            </ImageContainer>
           );
         }}
       </ImagePreloader>
