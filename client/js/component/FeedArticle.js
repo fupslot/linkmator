@@ -17,11 +17,14 @@ class FeedArticle extends React.Component {
 
     return (
       <ImagePreloader url={image.s3_object_key}>
-        {({url}) => {
+        {({url, width, height}) => {
           return (
-            <div className="FeedArticle__image-container">
-              <img className="FeedArticle__image" src={url} />
-            </div>
+              <div
+                className="FeedArticle__image-container"
+                style={{
+                  backgroundImage: `url(${url})`,
+                  height
+                }} />
           );
         }}
       </ImagePreloader>
