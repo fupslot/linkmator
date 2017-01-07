@@ -97,6 +97,25 @@ module.exports.waitUntilServerIsReady = function() {
   const self = this;
   self.server = require('../../server/app');
 
+  /// Helper Methods
+  this.GET = (path) => {
+    const accessToken = self.server.get('ACCESS_TOKEN');
+
+    return request(self.server)
+      .get(path)
+      .set('Cookie', `access_token=${accessToken}`);
+  };
+
+  /// Helper Methods
+  this.POST = (path, data) => {
+    const accessToken = self.server.get('ACCESS_TOKEN');
+
+    return request(self.server)
+      .post(path)
+      .set('Cookie', `access_token=${accessToken}`)
+      .send(data);
+  };
+
   return whenServerReady(self.server)
     .then(loginTestUser)
     .then(getUserCustomData);

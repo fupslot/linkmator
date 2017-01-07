@@ -69,10 +69,12 @@ router.post('/api/feed', (req, res) => {
     });
 });
 
+/// https://github.com/fupslot/linkmator/wiki/API
 router.get('/api/feed', function(req, res) {
   const currentUserId = req.user.customData.mongoId;
 
-  const type = req.query.type;
+  const {type, t} = req.query;
+  let timestamp = null;
 
   if (type && !isFeedType(type)) {
     return res.sendRequestError(
@@ -80,16 +82,26 @@ router.get('/api/feed', function(req, res) {
     );
   }
 
-  Promise.all([
+  if (t) {
+    timestamp = new Date(Number(t));
+    if (isNaN(timestamp.getTime())) {
+      return res.sendRequestError(
+        new Error('"t" must be a valid date')
+      );
+    }
+  }
+
+  return Promise.all([
     libData.getPerson(currentUserId),
-    libData.getFeed(currentUserId, {type})
+    libData.getFeed(currentUserId, {type, timestamp})
   ]).then((models) => {
     const STATUS = 200;
     res.status(STATUS).json({
       status: STATUS,
       data: {
         person: models[0],
-        feed: models[1]
+        feed: models[1],
+        timestamp: Date.now()
       }
     });
   }).catch(res.sendServerError);

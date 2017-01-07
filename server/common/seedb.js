@@ -7,6 +7,13 @@ const PersonModel = require('../model/person');
 const FeedModel = require('../model/feed');
 const config = require('node-config-files')('./server/config');
 
+
+const {
+  SEED_GRAPH_EXAMPLE_COM,
+  SEED_GRAPH_SCHEMA_ORG
+} = require('./seedefs');
+
+
 console.log(colors.yellow(`Seeding DB: ${config.env.mongo.uri}`));
 
 function handler(modelName) {
@@ -29,12 +36,12 @@ FeedModel.remove({}, handler('FeedModel'));
 OpenGraphModel.create(
   [
     {
-      url: 'http://www.example.com',
+      url: SEED_GRAPH_EXAMPLE_COM,
       title: 'Example Domain',
       hostname: 'example.com'
     },
     {
-      url: 'http://schema.org/',
+      url: SEED_GRAPH_SCHEMA_ORG,
       title: 'Home - schema.org',
       hostname: 'schema.org',
       description: 'Schema.org is a set of extensible schemas that enables webmasters to embed\n    structured data on their web pages for use by search engines and other applications.'

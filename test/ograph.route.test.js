@@ -9,6 +9,10 @@ const testUtil = require('./util');
 const Feed = require('../server/model/feed');
 const OpenGraph = require('../server/model/opengraph');
 
+const {
+  SEED_GRAPH_EXAMPLE_COM
+} = require('../server/common/seedefs');
+
 describe('HTTP Server', function() {
   this.timeout(20000);
 
@@ -125,7 +129,7 @@ describe('HTTP Server', function() {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       OpenGraph.findOne({
-        url: 'http://www.example.com'
+        url: SEED_GRAPH_EXAMPLE_COM
       }).then((graph) => {
 
         request(this.server)
@@ -162,7 +166,6 @@ describe('HTTP Server', function() {
         });
     });
 
-
     it('should return a fedd', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
@@ -173,13 +176,89 @@ describe('HTTP Server', function() {
         .end((err, res) => {
           expect(res.body.status).toEqual(200);
           expect(res.body.data).toExist();
-          // Note: Seed test data.
-          // expect(res.body.data.person).toExist();
-          // expect(res.body.data.feed).toExist();
-          // expect(res.body.data.feed).toBeA(Array);
           expect(res.body.errors).toNotExist();
           done();
         });
+    });
+
+    it('should validate "timestime"', function(done) {
+      this.GET('/api/feed')
+        .query({t: 'invalid_date'})
+        .end((err, res) => {
+          const { name, status, errors } = res.body;
+
+          expect(name).toEqual('RequestError');
+          expect(status).toEqual(400);
+          expect(errors).toBeAn('array');
+          expect(errors[0].message).toInclude(
+            '"t" must be a valid date'
+          );
+
+          done();
+        });
+    });
+
+    it('should get feed items created after timestamp', function(done) {
+      const self = this;
+      let query_t = null;
+
+      const getFeed = (timestamp) => {
+        return new Promise((resolve, reject) => {
+          const request = self.GET('/api/feed');
+
+          if (timestamp) {
+            request.query({t: timestamp});
+          }
+
+          request.end((err, res) => {
+            if (err) {
+              reject(err);
+            } else {
+              query_t = res.body.data.timestamp;
+              resolve(res.body);
+            }
+          });
+        });
+      };
+
+      const postFeed = (graph) => {
+        return new Promise((resolve, reject) => {
+          self.POST('/api/feed', {
+            data: {
+              open_graph_id: graph._id
+            }
+          })
+            .end((err, res) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(res.body);
+              }
+            });
+        });
+      };
+
+      getFeed()
+        .then(() => OpenGraph.findOne({
+          url: SEED_GRAPH_EXAMPLE_COM
+        }))
+        .then((graph) => {
+          if (!graph) {
+            Promise.reject(new Error(
+              `Seed graph "${SEED_GRAPH_EXAMPLE_COM}" not found`
+            ));
+          }
+          return graph;
+        })
+        .then((graph) => postFeed(graph))
+        .then(() => getFeed(query_t))
+        .then((response) => {
+          const {feed} = response.data;
+          expect(feed).toBeAn('array');
+          expect(feed.length).toBeGreaterThanOrEqualTo(1);
+          done();
+        })
+        .catch(done);
     });
   });
 
