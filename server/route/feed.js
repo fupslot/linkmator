@@ -107,4 +107,25 @@ router.get('/api/feed', function(req, res) {
   }).catch(res.sendServerError);
 });
 
+router.delete('/api/feed', function(req, res) {
+  const {id} = req.query;
+
+  if (!id || !validator.isMongoId(id)) {
+    return res.sendRequestError(
+      new Error('"id" is invalid')
+    );
+  }
+
+  return Feed.findByIdAndRemove(id)
+    .where('creator').equals(req.getUID())
+    .then(() => {
+      const STATUS = 200;
+      res.status(STATUS).json({
+        status: STATUS,
+        data: {}
+      });
+    })
+    .catch(res.sendServerError);
+});
+
 module.exports = router;

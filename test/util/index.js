@@ -106,7 +106,6 @@ module.exports.waitUntilServerIsReady = function() {
       .set('Cookie', `access_token=${accessToken}`);
   };
 
-  /// Helper Methods
   this.POST = (path, data) => {
     const accessToken = self.server.get('ACCESS_TOKEN');
 
@@ -114,6 +113,14 @@ module.exports.waitUntilServerIsReady = function() {
       .post(path)
       .set('Cookie', `access_token=${accessToken}`)
       .send(data);
+  };
+
+  this.DEL = (path) => {
+    const accessToken = self.server.get('ACCESS_TOKEN');
+
+    return request(self.server)
+      .del(path)
+      .set('Cookie', `access_token=${accessToken}`);
   };
 
   return whenServerReady(self.server)
