@@ -1,9 +1,8 @@
 'use strict';
 const AWS = require('aws-sdk');
 const request = require('request');
-// const crypto = require('crypto');
 const config = require('node-config-files')('./server/config');
-// const util = require('../util');
+
 
 module.exports = function(imageUrlObject) {
   const awsConfig = new AWS.Config({
@@ -30,7 +29,7 @@ module.exports = function(imageUrlObject) {
         ContentLength: response.headers['content-length']
       };
 
-      s3.putObject(params, function(err, response) {
+      return s3.putObject(params, function(err, response) {
         if (err) {
           // Note: should be reported to a log system
           return resolve(err);
@@ -40,6 +39,11 @@ module.exports = function(imageUrlObject) {
     }
 
     const url = imageUrlObject.url;
-    request.get(url).on('response', writeToS3);
+    request.get({
+      url,
+      headers: {
+        'User-Agent': config.common.server.userAgent
+      }
+    }).on('response', writeToS3);
   });
 };

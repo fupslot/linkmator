@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable */
+
 module.exports = () => {
   return {
     env: process.env.NODE_ENV,
@@ -10,6 +12,7 @@ module.exports = () => {
     webpack_server_port: process.env.WEBPACK_SERVER_PORT,
 
     gravatarUrl: '//www.gravatar.com/avatar',
-    cdnHost: '//d3rdc2hbfr3zgy.cloudfront.net'
+    cdnHost: '//d3rdc2hbfr3zgy.cloudfront.net',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36'
   };
 };
