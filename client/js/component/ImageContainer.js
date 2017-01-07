@@ -11,8 +11,11 @@ class ImageContainer extends React.Component {
   }
 
   componentDidMount() {
-    const {width, height} = this.el;
-    this.setState({width, height});
+    const {clientWidth, clientHeight} = this.el;
+    this.setState({
+      width: clientWidth,
+      height: clientHeight
+    });
   }
 
   render() {

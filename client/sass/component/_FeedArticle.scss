@@ -12,6 +12,8 @@ $feed-article-desc-font-size: 0.85em;
 
 .FeedArticle__image-container {
   width: 100%;
+  height: 222px;
+  overflow: hidden;
 }
 
 .FeedArticle__image {
@@ -66,4 +68,11 @@ $feed-article-desc-font-size: 0.85em;
   flex-wrap: wrap;
   padding: 12px;
   padding-top: 0;
+}
+
+
+@media #{$global-media-lg} {
+  .FeedArticle__image-container {
+    height: 309px;
+  }
 }

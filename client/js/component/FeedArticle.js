@@ -17,24 +17,29 @@ class FeedArticle extends React.Component {
     const image = model.image[0];
 
     return (
-      <ImagePreloader url={image.s3_object_key}>
-        {({url, width: imgWidth, height: iHeight}) => {
+      <ImageContainer>
+        {({width: cWidth, height: cHeight}) => {
           return (
-            <ImageContainer>
-              {({width: cWidth, height: cHeight}) => {
+            <ImagePreloader url={image.s3_object_key}>
+              {({url, width: imgWidth, height: imgHeight}) => {
+                const imageFitContaineer = (
+                  imgWidth <= cWidth &&
+                  imgHeight <= cHeight
+                );
+                const backgroundSize = imageFitContaineer ? 'initial' : 'cover';
                 return (
                   <div
                     className="FeedArticle__image"
                     style={{
                       backgroundImage: `url(${url})`,
-                      height: iHeight
+                      backgroundSize
                     }} />
                 );
               }}
-            </ImageContainer>
+              </ImagePreloader>
           );
         }}
-      </ImagePreloader>
+      </ImageContainer>
     );
   }
 
