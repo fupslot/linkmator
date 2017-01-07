@@ -38,29 +38,13 @@ function populateFeed(query) {
  * @return {Object} Promise
  */
 function getFeed(creator, options) {
-  const query = Feed.find({creator});
+  const query = populateFeed(Feed.find({creator}));
   query.select('-__v');
 
-  if (options.type) {
-    query.where('type').equals(options.type);
-  }
+  const {type, timestamp} = options;
 
-  query.populate({
-    path: 'creator',
-    select: '-__v',
-    model: 'Person'
-  });
-
-  query.populate({
-    path: 'opengraph',
-    select: '-__v',
-    model: 'OpenGraph',
-    populate: {
-      path: 'image',
-      select: ' -__v',
-      model: 'ImageObject'
-    }
-  });
+  type && query.where('type').equals(type);
+  timestamp && query.where('createdAt').gte(timestamp);
 
   query.sort({'createdAt': 'desc'});
   return query.exec();
