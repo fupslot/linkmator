@@ -36,6 +36,10 @@ $body-font-family: 'Open Sans', sans-serif;
 $body-font-color: $primary-color;
 $body-background: #F5F5F5;
 
+
+$global-media-lg: "only screen and (min-width : 75em)";
+
+
 html {
   box-sizing: border-box;
   font-size: $global-font-size;

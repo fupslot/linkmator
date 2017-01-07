@@ -8,6 +8,7 @@ html(lang=en)
     if config.env === 'production'
       link(rel="stylesheet" href="/static/#{assets.app.css}")
   body
+    input(id="config" type="hidden" value="#{JSON.stringify(config)}")
     #app
     if config.env !== 'production'
       script(type="text/javascript" src="/static/bundle.vendor.js")

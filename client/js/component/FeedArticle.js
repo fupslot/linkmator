@@ -1,63 +1,81 @@
 import React from 'react';
-import SvgIcon from './SvgIcon';
 import classNames from 'classnames';
+
+import SvgIcon from './SvgIcon';
+import ImagePreloader from './ImagePreloader';
+import ImageContainer from './ImageContainer';
 
 class FeedArticle extends React.Component {
   renderFeedImage() {
-    // Not implemented yet
-    return null;
-    // return (
-    //   <section className="FeedArticle__image">Image</section>
-    // );
-  }
+    const model = this.props.model;
 
-  renderFeedDomain() {
-    return (
-      <p className="FeedArticle__domain">
-        <SvgIcon glyph="globe" size="small" />
-        <span>{this.props.hostname}</span>
-      </p>
-    );
-  }
+    // No image to render
+    if (!Array.isArray(model.image) || !model.image[0]) {
+      return null;
+    }
 
-  renderFeedActions() {
+    const image = model.image[0];
+
     return (
-      <div className="FeedArticle__actions">
-        <button className="IconButton">
-          <SvgIcon glyph="share" size="normal" />
-        </button>
-      </div>
+      <ImageContainer>
+        {({width: cWidth, height: cHeight}) => {
+          return (
+            <ImagePreloader url={image.s3_object_key}>
+              {({url, width: imgWidth, height: imgHeight}) => {
+                const imageFitContaineer = (
+                  imgWidth <= cWidth &&
+                  imgHeight <= cHeight
+                );
+                const backgroundSize = imageFitContaineer ? 'initial' : 'cover';
+                return (
+                  <div
+                    className="FeedArticle__image"
+                    style={{
+                      backgroundImage: `url(${url})`,
+                      backgroundSize
+                    }} />
+                );
+              }}
+              </ImagePreloader>
+          );
+        }}
+      </ImageContainer>
     );
   }
 
   render() {
     const cx = classNames('FeedArticle', this.props.className);
+    const model = this.props.model;
 
     return (
       <article className={cx}>
         { this.renderFeedImage() }
         <header className="FeedArticle__header">
-          <a className="FeedArticle__link" href={this.props.url} target="_blank">
+          <a className="FeedArticle__link" href={model.url} target="_blank">
             <h6 className="FeedArticle__title">
-              { this.props.title }
+              { model.title }
             </h6>
             <p className="FeedArticle__description">
-              { this.props.description}
+              { model.description}
             </p>
-            { this.renderFeedDomain() }
+            <p className="FeedArticle__domain">
+              <SvgIcon glyph="globe" size="small" />
+              <span>{model.hostname}</span>
+            </p>
           </a>
         </header>
-        { this.renderFeedActions() }
+        <div className="FeedArticle__actions">
+          <button className="IconButton">
+            <SvgIcon glyph="share" size="normal" />
+          </button>
+        </div>
       </article>
     );
   }
 }
 
 FeedArticle.propTypes = {
-  url: React.PropTypes.string,
-  title: React.PropTypes.string,
-  hostname: React.PropTypes.string,
-  description: React.PropTypes.string,
+  model: React.PropTypes.object,
   className: React.PropTypes.string
 };
 

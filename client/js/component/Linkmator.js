@@ -67,10 +67,7 @@ export class Linkmator extends React.Component {
         onReset={this.handleGraphReset}>
         <FeedArticle
           className="FeedPoster__article"
-          url={this.props.graph.url}
-          title={this.props.graph.title}
-          hostname={this.props.graph.hostname}
-          description={this.props.graph.description} />
+          model={this.props.graph} />
       </FeedPoster>
     );
   }

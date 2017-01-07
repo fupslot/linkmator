@@ -9,6 +9,7 @@ module.exports = () => {
     test_user_password: process.env.TEST_USER_PASSWORD,
     webpack_server_port: process.env.WEBPACK_SERVER_PORT,
 
-    gravatarUrl: 'https://www.gravatar.com/avatar'
+    gravatarUrl: '//www.gravatar.com/avatar',
+    cdnHost: '//d3rdc2hbfr3zgy.cloudfront.net'
   };
 };
