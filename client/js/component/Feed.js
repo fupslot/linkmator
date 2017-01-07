@@ -20,7 +20,7 @@ export class Feed extends React.Component {
     return this.props.items.map((item, i) => {
       return (
         <FeedArticle
-          key={i}
+          key={item._id}
           model={item.opengraph} />
       );
     });
