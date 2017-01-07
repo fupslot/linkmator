@@ -3,8 +3,6 @@ $gutter-outer: 2rem;
 
 $half-gutter-width: 0.5em;
 
-$media-lg: "only screen and (min-width : 75em)";
-
 /// lg - 75em desktop-hd
 /// md - 64em desktop
 /// sm - 48em tablet
@@ -107,7 +105,7 @@ $media-lg: "only screen and (min-width : 75em)";
   max-width: 100%;
 }
 
-@media #{$media-lg} {
+@media #{$global-media-lg} {
   .container {
     width: 71em;
   }
