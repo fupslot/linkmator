@@ -153,39 +153,35 @@ describe('HTTP Server', function() {
 
   describe('GET /api/feed', function() {
     it('should validate "type"', function(done) {
-      const accessToken = this.server.get('ACCESS_TOKEN');
 
-      request(this.server)
-        .get('/api/feed?type=INVALID_VALUE')
-        .set('Cookie', `access_token=${accessToken}`)
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body.status).toEqual(400);
-          expect(res.body.errors).toExist();
-          done();
-        });
+      this.api.feed.get({
+        type: 'INVALID_VALUE'
+      }).then(testUtil.expectError).then(({body}) => {
+        expect(body.status).toEqual(400);
+        expect(body.errors).toExist();
+      }).then(done).catch(done);
     });
 
     it('should return a feed', function(done) {
-      const accessToken = this.server.get('ACCESS_TOKEN');
+      this.api.feed.get()
+        .then(testUtil.expectSuccess)
+        .then(({statusCode, body}) => {
+          const STATUS = 200;
 
-      request(this.server)
-        .get('/api/feed')
-        .set('Cookie', `access_token=${accessToken}`)
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body.status).toEqual(200);
-          expect(res.body.data).toExist();
-          expect(res.body.errors).toNotExist();
-          done();
-        });
+          expect(statusCode).toEqual(STATUS);
+          expect(body.status).toEqual(STATUS);
+          expect(body.data).toExist();
+          expect(body.errors).toNotExist();
+        }).then(done).catch(done);
     });
 
     it('should validate "timestime"', function(done) {
-      this.GET('/api/feed')
-        .query({t: 'invalid_date'})
-        .end((err, res) => {
-          const { name, status, errors } = res.body;
+      this.api.feed.get({
+        t: 'invalid_date'
+      })
+        .then(testUtil.expectError)
+        .then(({body}) => {
+          const { name, status, errors } = body;
 
           expect(name).toEqual('RequestError');
           expect(status).toEqual(400);
@@ -193,9 +189,7 @@ describe('HTTP Server', function() {
           expect(errors[0].message).toInclude(
             '"t" must be a valid date'
           );
-
-          done();
-        });
+        }).then(done).catch(done);
     });
 
     it('should get feed items created after timestamp', function(done) {
@@ -262,6 +256,7 @@ describe('HTTP Server', function() {
     });
 
     it('should remove a post from the feed', function(done) {
+      this.api.feed.get()
       OpenGraph.findOne({
         url: SEED_GRAPH_EXAMPLE_COM
       }).then((graph) => {

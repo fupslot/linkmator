@@ -1,5 +1,6 @@
 'use strict';
 const request = require('supertest');
+const expect = require('expect');
 
 function getAccessToken(values) {
   if (values && values.length > 0) {
@@ -123,7 +124,28 @@ module.exports.waitUntilServerIsReady = function() {
       .set('Cookie', `access_token=${accessToken}`);
   };
 
+
   return whenServerReady(self.server)
     .then(loginTestUser)
-    .then(getUserCustomData);
+    .then(getUserCustomData)
+    .then(() => {
+      this.api = require('./api')(self.server);
+    });
+};
+
+/// expectSuccess
+module.exports.expectSuccess = function(res) {
+  expect(res.body.status).toExist();
+  expect(res.body.errors).toNotExist();
+  expect(res.body.data).toExist();
+  return res;
+};
+
+/// expectError
+module.exports.expectError = function(res) {
+  expect(res.statusCode).toEqual(200);
+  expect(res.body.status).toExist();
+  expect(res.body.errors).toExist();
+  expect(res.body.data).toNotExist();
+  return res;
 };
