@@ -166,7 +166,7 @@ describe('HTTP Server', function() {
         });
     });
 
-    it('should return a fedd', function(done) {
+    it('should return a feed', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       request(this.server)
@@ -259,6 +259,37 @@ describe('HTTP Server', function() {
           done();
         })
         .catch(done);
+    });
+
+    it('should remove a post from the feed', function(done) {
+      OpenGraph.findOne({
+        url: SEED_GRAPH_EXAMPLE_COM
+      }).then((graph) => {
+        return new Promise((resolve, reject) => {
+          this.POST('/api/feed').send({
+            data: {
+              open_graph_id: graph.id
+            }
+          }).end((err, res) => {
+            if (err) {
+              return reject(err);
+            } else {
+              return resolve(res);
+            }
+          });
+        });
+      }).then((res) => {
+        return new Promise((resolve, reject) => {
+          this.DEL('/api/feed')
+            .query({id: res.body.data.feed._id})
+            .end((err, res) => {
+              expect(err).toNotExist();
+              expect(res.body.status).toEqual(200);
+              expect(res.body.data).toExist();
+              done();
+            });
+        });
+      }).catch(done);
     });
   });
 

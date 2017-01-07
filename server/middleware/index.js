@@ -20,5 +20,12 @@ module.exports = function(app, oConfig) {
   router.use(require('./sendServerError'));
   router.use(require('./errorHandlers'));
 
+  router.use(function(req, res, next) {
+    req.getUID = function() {
+      return req.user.customData.mongoId;
+    };
+    next();
+  });
+
   return router;
 };
