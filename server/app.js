@@ -79,6 +79,11 @@ app.use('/app', stormpath.loginRequired, (req, res) => {
   });
 });
 
+/// Root
+app.use('/', function(req, res) {
+  res.redirect('/login');
+});
+
 app.on('stormpath.ready', function() {
   app.listen(port, hostname, () => {
     console.log(colors.green(`S3 Bucket: ${config.common.s3.bucket}`));
