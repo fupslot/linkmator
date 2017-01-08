@@ -9,7 +9,7 @@ export class Topbar extends React.Component {
           <use xlinkHref="#glyph-logo" />
         </svg>
         <form method="POST" action="/logout">
-          <button>Logout</button>
+          <button>Leave</button>
         </form>
       </div>
     );
