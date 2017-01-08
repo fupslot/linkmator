@@ -64,11 +64,6 @@ class FeedArticle extends React.Component {
             </p>
           </a>
         </header>
-        <div className="FeedArticle__actions">
-          <button className="IconButton">
-            <SvgIcon glyph="share" size="normal" />
-          </button>
-        </div>
       </article>
     );
   }

@@ -62,14 +62,6 @@ $feed-article-desc-font-size: 0.85em;
     }
   }
 
-.FeedArticle__actions {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  padding: 12px;
-  padding-top: 0;
-}
-
 
 @media #{$global-media-lg} {
   .FeedArticle__image-container {
