@@ -1,11 +1,34 @@
 import React from 'react';
 import classNames from 'classnames';
 
+/// material-ui
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+
 import SvgIcon from './SvgIcon';
 import ImagePreloader from './ImagePreloader';
 import ImageContainer from './ImageContainer';
 
+const TOP_MENU_ITEM_REMOVE = 0x1;
+
 class FeedArticle extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleMenuItemTouch = this.handleMenuItemTouch.bind(this);
+  }
+
+  handleMenuItemTouch(evt, child) {
+    const { value } = child.props;
+    switch (value) {
+      /// Remove
+      case TOP_MENU_ITEM_REMOVE:
+        this.props.onRemove(this.props.model);
+        return;
+    }
+  }
+
   renderFeedImage() {
     const model = this.props.model;
 
@@ -43,12 +66,31 @@ class FeedArticle extends React.Component {
     );
   }
 
+  renderTop() {
+    return (
+      <div className="FeedArticle__top">
+        <IconMenu
+          onItemTouchTap={this.handleMenuItemTouch}
+          iconButtonElement={
+            <IconButton>
+              <SvgIcon glyph="more-vert" />
+            </IconButton>
+          }
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}>
+          <MenuItem primaryText="Remove" value={TOP_MENU_ITEM_REMOVE} />
+        </IconMenu>
+      </div>
+    );
+  }
+
   render() {
     const cx = classNames('FeedArticle', this.props.className);
     const model = this.props.model;
 
     return (
       <article className={cx}>
+        { this.renderTop() }
         { this.renderFeedImage() }
         <header className="FeedArticle__header">
           <a className="FeedArticle__link" href={model.url} target="_blank">
@@ -71,7 +113,8 @@ class FeedArticle extends React.Component {
 
 FeedArticle.propTypes = {
   model: React.PropTypes.object,
-  className: React.PropTypes.string
+  className: React.PropTypes.string,
+  onRemove: React.PropTypes.func
 };
 
 export default FeedArticle;

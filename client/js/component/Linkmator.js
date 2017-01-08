@@ -9,6 +9,7 @@ import {
 import FeedArticle from './FeedArticle';
 import FeedPoster from './FeedPoster';
 
+import RaisedButton from 'material-ui/RaisedButton';
 
 export class Linkmator extends React.Component {
   constructor(props) {
@@ -78,9 +79,7 @@ export class Linkmator extends React.Component {
     }
 
     return (
-      <form
-        className="Linkmator__form"
-        onSubmit={this.handleTextSubmit}>
+      <form className="Linkmator__form">
         <textarea
           name="text"
           className="Linkmator__input"
@@ -89,12 +88,16 @@ export class Linkmator extends React.Component {
           disabled={this.props.isSaving}
           value={this.state.text}
           onChange={this.handleTextChange} />
-        <button
-          className="Linkmator__button"
-          disabled={this.props.isSaving}>Post</button>
+        <RaisedButton
+          label="Post"
+          primary={true}
+          onTouchTap={this.handleTextSubmit} />
       </form>
     );
   }
+  // <button
+  //   className="Linkmator__button"
+  //   disabled={this.props.isSaving}>Post</button>
 
   render() {
     return (

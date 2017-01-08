@@ -4,12 +4,22 @@ import { fetchFeed } from '../actions';
 import FeedArticle from './FeedArticle';
 
 export class Feed extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handlePostRemove = this.handlePostRemove.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetchFeed();
   }
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps.items);
+  }
+
+  handlePostRemove(postModel) {
+    console.log(postModel);
   }
 
   renderFeedArticles() {
@@ -21,7 +31,8 @@ export class Feed extends React.Component {
       return (
         <FeedArticle
           key={item._id}
-          model={item.opengraph} />
+          model={item.opengraph}
+          onRemove={this.handlePostRemove}/>
       );
     });
   }

@@ -23,8 +23,12 @@ export default function SvgIcon(props) {
   );
 }
 
+SvgIcon.defaultProps = {
+  size: 'small'
+};
+
 SvgIcon.propTypes = {
-  size: React.PropTypes.string.isRequired,
+  size: React.PropTypes.string,
   glyph: React.PropTypes.string.isRequired,
   className: React.PropTypes.string
 };
