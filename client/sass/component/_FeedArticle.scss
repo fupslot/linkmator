@@ -40,9 +40,7 @@ $feed-article-desc-font-size: 0.85em;
     font-size: $feed-article-title-font-size;
     font-weight: 400;
     color: $primary-color;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-weight: 600;
   }
 
   .FeedArticle__description {
