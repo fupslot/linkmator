@@ -1,5 +1,10 @@
 import React from 'react';
 
+/// material-ui
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+
 export default function FeedPoster(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -11,23 +16,36 @@ export default function FeedPoster(props) {
     props.onReset(props.graph);
   };
 
+  const paperStyle = {
+    margin: 0,
+    padding: '1em',
+    backgroundColor: '#EEEEEE',
+    width: '100%'
+  };
+
   return (
-    <form
-      name="feed_poster"
-      className="FeedPoster"
-      onSubmit={handleSubmit}
-      onReset={handleReset}>
-      <div className="FeedPoster__container">
+    <Paper style={paperStyle} zDepth={0}>
+      <form
+        name="feed_poster"
+        className="FeedPoster">
         <label className="FeedPoster__title">
           {props.graph.url}
         </label>
         { props.children }
         <div className="FeedPoster__actions">
-          <button type="reset" className="Linkmator__button">Cancel</button>
-          <button className="Linkmator__button">Save</button>
+          <FlatButton
+            label="Cancel"
+            style={{
+              marginRight: '1em'
+            }}
+            onTouchTap={handleReset} />
+          <RaisedButton
+            label="Save"
+            primary={true}
+            onTouchTap={handleSubmit} />
         </div>
-      </div>
-    </form>
+      </form>
+    </Paper>
   );
 }
 

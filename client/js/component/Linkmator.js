@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+/// material-ui
+import Paper from 'material-ui/Paper';
+
 import {
   createOpenGraph,
   postGraphToFeed,
@@ -9,6 +12,7 @@ import {
 import FeedArticle from './FeedArticle';
 import FeedPoster from './FeedPoster';
 
+/// material-ui
 import RaisedButton from 'material-ui/RaisedButton';
 
 export class Linkmator extends React.Component {
@@ -79,20 +83,25 @@ export class Linkmator extends React.Component {
     }
 
     return (
-      <form className="Linkmator__form">
-        <textarea
-          name="text"
-          className="Linkmator__input"
-          ref={(el) => this.textarea = el}
-          cols={4}
-          disabled={this.props.isSaving}
-          value={this.state.text}
-          onChange={this.handleTextChange} />
-        <RaisedButton
-          label="Post"
-          primary={true}
-          onTouchTap={this.handleTextSubmit} />
-      </form>
+      <Paper zDepth={1} style={{
+        padding: '1em 0'
+      }}>
+        <form className="Linkmator__form">
+          <textarea
+            name="text"
+            placeholder="Thing to share"
+            className="Linkmator__input"
+            ref={(el) => this.textarea = el}
+            cols={4}
+            disabled={this.props.isSaving}
+            value={this.state.text}
+            onChange={this.handleTextChange} />
+          <RaisedButton
+            label="Post"
+            primary={true}
+            onTouchTap={this.handleTextSubmit} />
+        </form>
+      </Paper>
     );
   }
   // <button

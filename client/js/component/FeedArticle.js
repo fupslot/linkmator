@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-
 /// material-ui
+import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -85,11 +85,15 @@ class FeedArticle extends React.Component {
   }
 
   render() {
-    const cx = classNames('FeedArticle', this.props.className);
+    // const cx = classNames('FeedArticle', this.props.className);
     const model = this.props.model;
 
+    // const paperStyle = {
+    //   background
+    // }
+
     return (
-      <article className={cx}>
+      <Paper zDepth={1}>
         { this.renderTop() }
         { this.renderFeedImage() }
         <header className="FeedArticle__header">
@@ -106,7 +110,7 @@ class FeedArticle extends React.Component {
             </p>
           </a>
         </header>
-      </article>
+      </Paper>
     );
   }
 }

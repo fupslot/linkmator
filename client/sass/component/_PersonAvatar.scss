@@ -2,6 +2,7 @@ $person-avatart-size: 42px;
 
 .PersonAvatar {
   @include clearfix();
+  margin-bottom: 1em;
 }
 
 .PersonAvatar__name {
