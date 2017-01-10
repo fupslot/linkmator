@@ -1,33 +1,22 @@
-.FeedPoster {
-
-}
-
-.FeedPoster__container {
-  margin: 0;
-  padding: 0.35em 0.625em 0.75em;
-  border: 1px solid #E0E0E0;
-  background-color: #EEEEEE;
-  width: 100%;
-}
+.FeedPoster { }
 
 .FeedPoster__article {
   margin-bottom: 1em;
 }
 
 .FeedPoster__title {
-  @include text-overflow();
-
   display: block;
-  margin-bottom: 1em;
   font-size: 14px;
   font-weight: 400;
-  margin-top: 1.5em;
+  margin-bottom: 1em;
+  color: $global-primary-color;
 }
 
 .FeedPoster__actions {
   display: flex;
   justify-content: flex-end;
-  
+  margin-top: 1em;
+
   & > button {
     margin-right: 6px;
 
