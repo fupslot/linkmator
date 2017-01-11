@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+
 /// material-ui
 import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
@@ -9,6 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import SvgIcon from './SvgIcon';
 import ImagePreloader from './ImagePreloader';
 import ImageContainer from './ImageContainer';
+import toDateString from '../util/toDateString';
 
 const TOP_MENU_ITEM_REMOVE = 0x1;
 
@@ -69,6 +70,9 @@ class FeedArticle extends React.Component {
   renderTop() {
     return (
       <div className="FeedArticle__top">
+        <span className="FeedArticle__date">
+          {toDateString(this.props.model.createdAt)}
+        </span>
         <IconMenu
           onItemTouchTap={this.handleMenuItemTouch}
           iconButtonElement={
@@ -85,12 +89,7 @@ class FeedArticle extends React.Component {
   }
 
   render() {
-    // const cx = classNames('FeedArticle', this.props.className);
     const model = this.props.model;
-
-    // const paperStyle = {
-    //   background
-    // }
 
     return (
       <Paper zDepth={1}>

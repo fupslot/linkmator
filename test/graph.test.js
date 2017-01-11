@@ -3,6 +3,7 @@ const expect = require('expect');
 const util = require('../server/util');
 const ImageUrlObject = require('../server/lib/ImageUrlObject');
 const validationMethodDecorator = require('../server/middleware/sendModelValidationError');
+const toDateString = require('../client/js/util/toDateString');
 
 describe('lib/graph', function() {
   it('should return string hash', function() {
@@ -75,5 +76,19 @@ describe('middleware', function() {
     expect(
       response.sendModelValidationError.bind({}, {})
     ).toThrow('errors object not found');
+  });
+});
+
+describe('toDateString', function functionName() {
+  it('should show minutes', function() {
+    const date = new Date();
+    date.setMinutes(date.getMinutes() - 2);
+    expect(toDateString(date)).toEqual('2m');
+  });
+
+  it('should show hours', function() {
+    const date = new Date();
+    date.setHours(date.getHours() - 5);
+    expect(toDateString(date)).toEqual('5h');
   });
 });
