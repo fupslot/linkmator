@@ -5,14 +5,19 @@ $feed-article-desc-font-size: 0.85em;
 
 .FeedArticle {
   background: $white-color;
-  // border: 1px solid $body-background;
-  // box-shadow: -1px 1px 0 0 $feed-article-shadow-color1, 0 1px 2px 0 $feed-article-shadow-color2;
   width: 100%;
 }
 
 .FeedArticle__top {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+
+.FeedArticle__date {
+  font-weight: 300;
+  font-size: 14px;
+  color: $primary-color
 }
 
 .FeedArticle__image-container {
