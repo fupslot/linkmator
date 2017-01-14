@@ -1,8 +1,8 @@
 {
   "apps" : [{
     "script"    : "./server/app.js",
-    "instances" : "max",
-    "exec_mode" : "cluster"
+    "instances" : "1",
+    "exec_mode" : "fork"
   },{
     "script"    : "./worker/mailer.js",
     "instances" : "1",
