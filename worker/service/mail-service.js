@@ -18,6 +18,10 @@ const handlers = {
     console.log('SQS | WelcomeEmail');
     sendEmail(body, callback);
   },
+  'FeedShare': (sendStamp, body, callback) => {
+    console.log('SQS | FeedShare');
+    sendEmail(body, callback);
+  },
   'recordEvent': (sendStamp, body, callback) => {
     console.log('SQS | RecordEvent');
     callback();

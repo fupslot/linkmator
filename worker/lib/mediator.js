@@ -16,6 +16,9 @@ const QueuingService = require('./queuing-service');
 const subscriptions = {
   'user-create': [
     'WelcomeEmail'
+  ],
+  'feed-share': [
+    'FeedShare'
   ]
 };
 
