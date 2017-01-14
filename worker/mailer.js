@@ -2,7 +2,7 @@
 require('dotenv').load();
 
 const MailService = require('./service/mail-service');
-const QueuingService = require('./queuing-service');
+const QueuingService = require('./lib/queuing-service');
 
 
 process.on('SIGTERM', (sig) => process.exit(0));
