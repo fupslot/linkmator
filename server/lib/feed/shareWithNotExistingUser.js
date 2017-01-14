@@ -4,17 +4,25 @@ const shareFeedWithExistingUser = require('./shareWithExistingUser');
 const findPersonByEmail = require('../person/findByEmail');
 
 const mediator = require('../../../worker/lib/mediator');
-
+const config = require('node-config-files')('./server/config');
 
 module.exports = ({feedId, feedOwnerId, recipient}) => {
   const sendFeedShareEmail = (person) => {
     return new Promise((resolve) => {
-      mediator.publishEvent('feed-share', {to: person.email}, (error) => {
-        if (error) {
-          console.log(`APP | ERROR: ${error}`);
-        }
-        resolve(person);
-      });
+      const {baseUrl} = config.common.server;
+      const sharedUrl = `${baseUrl}/login?email=${recipient}`;
+      mediator.publishEvent(
+        'feed-share',
+        {
+          to: person.email,
+          sharedUrl
+        },
+        (error) => {
+          if (error) {
+            console.log(`APP | ERROR: ${error}`);
+          }
+          resolve(person);
+        });
     });
   };
 
