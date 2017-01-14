@@ -32,6 +32,13 @@ const Feed = new Schema(
         '{PATH} doesn\'t match {VALUE}'
       ]
     },
+
+    sharedBy: {
+      type: Schema.ObjectId,
+      ref: 'Person',
+    },
+    sharedAt: Date,
+
     downvoteCount: {
       type: Number,
       default: 0

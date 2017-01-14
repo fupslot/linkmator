@@ -1,0 +1,11 @@
+{
+  "apps" : [{
+    "script"    : "./server/app.js",
+    "instances" : "max",
+    "exec_mode" : "cluster"
+  },{
+    "script"    : "./worker/mailer.js",
+    "instances" : "1",
+    "exec_mode" : "worker"
+  }]
+}

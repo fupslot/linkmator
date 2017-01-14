@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const express = require('express');
 const stormpath = require('express-stormpath');
 const colors = require('colors/safe');
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -50,7 +51,7 @@ if ('development' === env) {
   // server when webpack is bundling
   proxy.on('error', function() {
     console.log(
-      colors.red('Could not connect to proxy, please try again...')
+      colors.red('APP | ERROR: Could not connect to proxy, please try again...')
     );
   });
 
@@ -65,6 +66,7 @@ if ('development' === env) {
 // Routes
 app.use(require('./route/og'));
 app.use(require('./route/feed'));
+app.use(require('./route/share'));
 
 // Render
 app.use('/app', stormpath.loginRequired, (req, res) => {
@@ -86,11 +88,17 @@ app.use('/', function(req, res) {
 
 app.on('stormpath.ready', function() {
   app.listen(port, hostname, () => {
-    console.log(colors.green(`S3 Bucket: ${config.common.s3.bucket}`));
-    console.log(colors.green(`S3 Region: ${config.common.s3.region}`));
+    console.log(colors.green(`APP | S3 Bucket: ${config.common.s3.bucket}`));
+    console.log(colors.green(`APP | S3 Region: ${config.common.s3.region}`));
 
-    console.log(colors.green(`Listening port ${port} in "${env}"`));
+    console.log(colors.green(`APP | Listening port ${port} in "${env}"`));
     app.emit('application.ready');
+  });
+});
+
+process.on('SIGINT', function() {
+  mongoose.disconnect(function(err) {
+    process.exit(err ? 1 : 0);
   });
 });
 
