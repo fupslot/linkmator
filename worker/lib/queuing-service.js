@@ -60,7 +60,7 @@ exports.listen = (handler) => {
       QueueUrl: sqsQueueUrl('high'),
       MaxNumberOfMessages: 10,
       VisibilityTimeout: 60,
-      WaitTimeSeconds: 20
+      WaitTimeSeconds: Number(process.env.WORKER_WAIT_TIME_SECONDS)
     };
 
     sqs.receiveMessage(messageParams, (error, data) => {
