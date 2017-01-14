@@ -12,13 +12,13 @@ module.exports = (oConfig) => {
 
   mongoose.connect(uri, options, function(error) {
     if (error) {
-      console.log(colors.red('Database: failed'));
-      console.log(colors.red(`Database: ${error.message}`));
+      console.log(colors.red('APP | Database: failed'));
+      console.log(colors.red(`APP | Database: ${error.message}`));
       process.exit(1);
     }
 
-    console.log(colors.green('Database: ready'));
-    console.log(colors.green(`Database: ${uri}`));
+    console.log(colors.green('APP | Database: ready'));
+    console.log(colors.green(`APP | Database: ${uri}`));
 
     if (oConfig.common.server.env === 'test') {
       require('./seedb');
