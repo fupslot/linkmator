@@ -319,41 +319,41 @@ describe('HTTP Server', function() {
     });
   });
 
-  describe('Post registration', function() {
-    it('should create a person record', function(done) {
-      const postRegistrationHandler = require(
-        '../server/middleware/postRegistrationHandler'
-      );
-
-      const account = {
-        username: 'test@example.com',
-        email: 'test@example.com',
-        href: 'link_to_stormpath_account',
-        givenName: 'Test',
-        surname: 'Test',
-        customData: {
-          save: expect.createSpy().andCall((fn) => fn())
-        }
-      };
-
-      const next = () => {
-        expect(account.customData.mongoId).toExist();
-        expect(account.customData.save).toHaveBeenCalled();
-      };
-
-      postRegistrationHandler(account, undefined, undefined, next)
-        .then((model) => {
-          // Should create Gravatar image url
-          // See: http://en.gravatar.com/site/implement/images/
-          const emailMd5Hash = util.getMD5Hash(account.email);
-          expect(model.emailMd5Hash).toEqual(emailMd5Hash);
-          expect(model.gravatarUrl).toEqual(
-            util.createGravatarUrl(emailMd5Hash)
-          );
-
-          done();
-        })
-        .catch(done);
-    });
-  });
+  // describe('Post registration', function() {
+  //   it('should create a person record', function(done) {
+  //     const postRegistrationHandler = require(
+  //       '../server/middleware/postRegistrationHandler'
+  //     );
+  //
+  //     const account = {
+  //       username: 'test@example.com',
+  //       email: 'test@example.com',
+  //       href: 'link_to_stormpath_account',
+  //       givenName: 'Test',
+  //       surname: 'Test',
+  //       customData: {
+  //         save: expect.createSpy().andCall((fn) => fn())
+  //       }
+  //     };
+  //
+  //     const next = () => {
+  //       expect(account.customData.mongoId).toExist();
+  //       expect(account.customData.save).toHaveBeenCalled();
+  //     };
+  //
+  //     postRegistrationHandler(account, undefined, undefined, next)
+  //       .then((model) => {
+  //         // Should create Gravatar image url
+  //         // See: http://en.gravatar.com/site/implement/images/
+  //         const emailMd5Hash = util.getMD5Hash(account.email);
+  //         expect(model.emailMd5Hash).toEqual(emailMd5Hash);
+  //         expect(model.gravatarUrl).toEqual(
+  //           util.createGravatarUrl(emailMd5Hash)
+  //         );
+  //
+  //         done();
+  //       })
+  //       .catch(done);
+  //   });
+  // });
 });
