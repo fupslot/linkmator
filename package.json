@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install": "npm install pm2 -g",
     "postinstall": "npm run build",
     "start": "./node_modules/.bin/pm2 start ./processes.json",
     "start-watch": "./node_modules/.bin/nodemon server/app.js",
