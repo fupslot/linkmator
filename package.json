@@ -6,7 +6,7 @@
   "scripts": {
     "install": "npm install pm2 -g",
     "postinstall": "npm run build",
-    "start": "./node_modules/.bin/pm2 start ./processes.json",
+    "start": "node ./heroku.js",
     "start-watch": "./node_modules/.bin/nodemon server/app.js",
     "start-debug": "./node_modules/.bin/nodemon -- debug server/app.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha test/**/*.test.js",
