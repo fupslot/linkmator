@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
+import Divider from 'material-ui/Divider';
 
 import SvgIcon from './SvgIcon';
 import ImagePreloader from './ImagePreloader';
@@ -12,6 +13,7 @@ import ImageContainer from './ImageContainer';
 import toDateString from '../util/toDateString';
 
 const TOP_MENU_ITEM_REMOVE = 0x1;
+const TOP_MENU_ITEM_SHARE = 0x2;
 
 class FeedArticle extends React.Component {
   constructor(props) {
@@ -27,6 +29,8 @@ class FeedArticle extends React.Component {
       case TOP_MENU_ITEM_REMOVE:
         this.props.onRemove(this.props.model);
         return;
+      case TOP_MENU_ITEM_SHARE:
+        this.props.onShare(this.props.model);
     }
   }
 
@@ -82,6 +86,8 @@ class FeedArticle extends React.Component {
           }
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}>
+          <MenuItem primaryText="Share..." value={TOP_MENU_ITEM_SHARE} />
+          <Divider />
           <MenuItem primaryText="Remove" value={TOP_MENU_ITEM_REMOVE} />
         </IconMenu>
       </div>
@@ -117,7 +123,8 @@ class FeedArticle extends React.Component {
 FeedArticle.propTypes = {
   model: React.PropTypes.object,
   className: React.PropTypes.string,
-  onRemove: React.PropTypes.func
+  onRemove: React.PropTypes.func,
+  onShare: React.PropTypes.func
 };
 
 export default FeedArticle;
