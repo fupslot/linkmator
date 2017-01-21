@@ -6,14 +6,10 @@ const validator = require('validator');
 const shareFeedWithExistingUser = require('../lib/feed/shareWithExistingUser');
 const shareFeedWithNotExistingUser = require('../lib/feed/shareWithNotExistingUser');
 
-router.post('/api/share', (req, res) => {
-  if (!req.body.data) {
-    return res.sendRequestError(new Error('data not found'));
-  }
+router.post('/api/share/post', (req, res) => {
+  const {postId, recipients} = req.body;
 
-  const {feedId, recipients} = req.body.data;
-
-  if (!validator.isMongoId(feedId)) {
+  if (!validator.isMongoId(postId)) {
     return res.sendRequestError(new Error('feedId isn\'t valid'));
   }
 
@@ -35,14 +31,14 @@ router.post('/api/share', (req, res) => {
   recipients.forEach((recipient) => {
     if (validator.isMongoId(recipient)) {
       tasks.push(shareFeedWithExistingUser({
-        feedId,
-        feedOwnerId: req.getUID(),
+        postId,
+        postOwnerId: req.getUID(),
         recipient
       }));
     } else if (validator.isEmail(recipient)) {
       tasks.push(shareFeedWithNotExistingUser({
-        feedId,
-        feedOwnerId: req.getUID(),
+        postId,
+        postOwnerId: req.getUID(),
         recipient
       }));
     }

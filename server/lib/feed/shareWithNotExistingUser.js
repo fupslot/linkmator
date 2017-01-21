@@ -6,7 +6,7 @@ const findPersonByEmail = require('../person/findByEmail');
 const mediator = require('../../../worker/lib/mediator');
 const config = require('node-config-files')('./server/config');
 
-module.exports = ({feedId, feedOwnerId, recipient}) => {
+module.exports = ({postId, postOwnerId, recipient}) => {
   const sendFeedShareEmail = (person) => {
     return new Promise((resolve) => {
       const {baseUrl} = config.common.server;
@@ -36,8 +36,8 @@ module.exports = ({feedId, feedOwnerId, recipient}) => {
     .then(sendFeedShareEmail)
     .then((person) => {
       return shareFeedWithExistingUser({
-        feedId,
-        feedOwnerId,
+        postId,
+        postOwnerId,
         recipient: person._id
       });
     });

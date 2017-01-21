@@ -1,22 +1,22 @@
 'use strict';
-const Feed = require('../../model/feed');
+const Post = require('../../model/post.model');
 
-module.exports = ({feedId, feedOwnerId, recipient}) => {
-  return Feed.findById(feedId)
-    .where('creator')
-    .equals(feedOwnerId)
+module.exports = ({postId, postOwnerId, recipient}) => {
+  return Post.findById(postId)
+    .where('owner')
+    .equals(postOwnerId)
     .exec()
-    .then((feed) => {
-      if (!feed) {
+    .then((post) => {
+      if (!post) {
         return Promise.resolve();
       }
 
-      const data = feed.toJSON();
+      const data = post.toJSON();
       delete data._id;
-      data.creator = recipient;
-      data.sharedBy = feedOwnerId;
+      data.owner = recipient;
+      data.sharedBy = postOwnerId;
       data.sharedAt = new Date();
 
-      return Feed.create(data);
+      return Post.create(data);
     });
 };
