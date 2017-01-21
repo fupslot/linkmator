@@ -8,6 +8,7 @@ const util = require('../server/util');
 const testUtil = require('./util');
 const Feed = require('../server/model/feed');
 const OpenGraph = require('../server/model/opengraph');
+const GraphModel = require('../server/model/graph.model');
 
 const {
   SEED_GRAPH_EXAMPLE_COM
@@ -91,31 +92,29 @@ describe('HTTP Server', function() {
     });
   });
 
-  describe('POST /api/feed', function() {
-    it('"data" should exist', function(done) {
+  describe('POST /api/posts', function() {
+    // it('"data" should exist', function(done) {
+    //   const accessToken = this.server.get('ACCESS_TOKEN');
+    //
+    //   request(this.server)
+    //     .post('/api/posts')
+    //     .set('Cookie', `access_token=${accessToken}`)
+    //     .send({})
+    //     .expect(200)
+    //     .end((err, res) => {
+    //       expect(res.body.status).toEqual(400);
+    //       done();
+    //     });
+    // });
+
+    it('"graphId" should have a proper type', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       request(this.server)
-        .post('/api/feed')
-        .set('Cookie', `access_token=${accessToken}`)
-        .send({})
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body.status).toEqual(400);
-          done();
-        });
-    });
-
-    it('"open_graph_id" should have proper type', function(done) {
-      const accessToken = this.server.get('ACCESS_TOKEN');
-
-      request(this.server)
-        .post('/api/feed')
+        .post('/api/posts')
         .set('Cookie', `access_token=${accessToken}`)
         .send({
-          data: {
-            open_graph_id: 'invalid value'
-          }
+          graphId: 'invalid value'
         })
         .expect(200)
         .end((err, res) => {
@@ -125,25 +124,23 @@ describe('HTTP Server', function() {
     });
 
     // Note: Need Seed Data
-    it('should create a feed item', function(done) {
+    it('should create a post', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
-      OpenGraph.findOne({
+      GraphModel.findOne({
         url: SEED_GRAPH_EXAMPLE_COM
       }).then((graph) => {
 
         request(this.server)
-          .post('/api/feed')
+          .post('/api/posts')
           .set('Cookie', `access_token=${accessToken}`)
           .send({
-            data: {
-              open_graph_id: graph.id
-            }
+            graphId: graph.id
           })
           .expect(201)
           .end((error, res) => {
             expect(error).toNotExist();
-            expect(res.body.data.feed).toExist();
+            expect(res.body.data.post).toExist();
             done();
           });
       }).catch(done);
@@ -151,10 +148,10 @@ describe('HTTP Server', function() {
   });
 
 
-  describe('GET /api/feed', function() {
+  describe('GET /api/posts', function() {
     it('should validate "type"', function(done) {
 
-      this.api.feed.get({
+      this.api.posts.get({
         type: 'INVALID_VALUE'
       }).then(testUtil.expectError).then(({body}) => {
         expect(body.status).toEqual(400);
@@ -163,7 +160,7 @@ describe('HTTP Server', function() {
     });
 
     it('should return a feed', function(done) {
-      this.api.feed.get()
+      this.api.posts.get()
         .then(testUtil.expectSuccess)
         .then(({statusCode, body}) => {
           const STATUS = 200;
@@ -176,7 +173,7 @@ describe('HTTP Server', function() {
     });
 
     it('should validate "timestime"', function(done) {
-      this.api.feed.get({
+      this.api.posts.get({
         t: 'invalid_date'
       })
         .then(testUtil.expectError)
@@ -192,13 +189,13 @@ describe('HTTP Server', function() {
         }).then(done).catch(done);
     });
 
-    it('should get feed items created after timestamp', function(done) {
+    it('should fetch posts created after a timestamp', function(done) {
       const self = this;
       let query_t = null;
 
-      const getFeed = (timestamp) => {
+      const fetchPosts = (timestamp) => {
         return new Promise((resolve, reject) => {
-          const request = self.GET('/api/feed');
+          const request = self.GET('/api/posts');
 
           if (timestamp) {
             request.query({t: timestamp});
@@ -215,12 +212,10 @@ describe('HTTP Server', function() {
         });
       };
 
-      const postFeed = (graph) => {
+      const createPost = (graph) => {
         return new Promise((resolve, reject) => {
-          self.POST('/api/feed', {
-            data: {
-              open_graph_id: graph._id
-            }
+          self.POST('/api/posts', {
+            graphId: graph._id
           })
             .end((err, res) => {
               if (err) {
@@ -232,8 +227,8 @@ describe('HTTP Server', function() {
         });
       };
 
-      getFeed()
-        .then(() => OpenGraph.findOne({
+      fetchPosts()
+        .then(() => GraphModel.findOne({
           url: SEED_GRAPH_EXAMPLE_COM
         }))
         .then((graph) => {
@@ -244,27 +239,25 @@ describe('HTTP Server', function() {
           }
           return graph;
         })
-        .then((graph) => postFeed(graph))
-        .then(() => getFeed(query_t))
+        .then((graph) => createPost(graph))
+        .then(() => fetchPosts(query_t))
         .then((response) => {
-          const {feed} = response.data;
-          expect(feed).toBeAn('array');
-          expect(feed.length).toBeGreaterThanOrEqualTo(1);
+          const {posts} = response.data;
+          expect(posts).toBeAn('array');
+          expect(posts.length).toBeGreaterThanOrEqualTo(1);
           done();
         })
         .catch(done);
     });
 
-    it('should remove a post from the feed', function(done) {
-      this.api.feed.get()
-      OpenGraph.findOne({
+    it('should remove a post', function(done) {
+      // this.api.posts.get();
+      GraphModel.findOne({
         url: SEED_GRAPH_EXAMPLE_COM
       }).then((graph) => {
         return new Promise((resolve, reject) => {
-          this.POST('/api/feed').send({
-            data: {
-              open_graph_id: graph.id
-            }
+          this.POST('/api/posts').send({
+            graphId: graph.id
           }).end((err, res) => {
             if (err) {
               return reject(err);
@@ -275,8 +268,8 @@ describe('HTTP Server', function() {
         });
       }).then((res) => {
         return new Promise((resolve, reject) => {
-          this.DEL('/api/feed')
-            .query({id: res.body.data.feed._id})
+          this.DEL('/api/posts')
+            .query({id: res.body.data.post._id})
             .end((err, res) => {
               expect(err).toNotExist();
               expect(res.body.status).toEqual(200);

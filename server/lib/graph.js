@@ -34,7 +34,6 @@ function createImageObject(obj) {
   const s3Key = `${config.common.s3.objectKey}/${parsedUrl.hostname}/${originalUrlHash}`;
 
   const imageObject = {
-    _id: new mongoose.Types.ObjectId(),
     originalUrl,
     originalUrlHash,
     s3Bucket,

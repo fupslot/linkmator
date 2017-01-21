@@ -51,10 +51,34 @@ OpenGraphModel.create(
   ]
 ).then(() => {
   console.log(
-    colors.yellow('OpenGraphModel - Seeded')
+    colors.yellow('OpenGraphModel | Seeded')
   );
 }).catch((error) => {
   console.log(
-    colors.red(`SeedingError - ${error.message}`)
+    colors.red(`GraphModel | Error: ${error.message}`)
+  );
+});
+
+GraphModel.create(
+  [
+    {
+      url: SEED_GRAPH_EXAMPLE_COM,
+      title: 'Example Domain',
+      hostname: 'example.com'
+    },
+    {
+      url: SEED_GRAPH_SCHEMA_ORG,
+      title: 'Home - schema.org',
+      hostname: 'schema.org',
+      description: 'Schema.org is a set of extensible schemas that enables webmasters to embed\n    structured data on their web pages for use by search engines and other applications.'
+    }
+  ]
+).then(() => {
+  console.log(
+    colors.yellow('GraphModel | Seeded')
+  );
+}).catch((error) => {
+  console.log(
+    colors.red(`GraphModel | Error: ${error.message}`)
   );
 });
