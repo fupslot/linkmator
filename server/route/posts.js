@@ -2,60 +2,50 @@
 const express = require('express');
 const router = express.Router();
 const validator = require('validator');
-const OpenGraph = require('../model/opengraph');
+// const OpenGraph = require('../model/opengraph');
+const GraphModel = require('../model/graph.model');
 const Feed = require('../model/feed');
+const Post = require('../model/post.model');
 const ValidationError = require('mongoose/lib/error/validation');
 const libData = require('../lib/data');
 const { isFeedType } = require('../lib/validate');
 
 /**
- * POST /api/feed
- * {
- *   data: {
- *     ogid: '<openg graph id>'
- *   }
- * }
+ * POST /api/post
+ * https://github.com/fupslot/linkmator/wiki/API
  */
-router.post('/api/feed', (req, res) => {
-  const data = req.body.data;
+router.post('/api/posts', (req, res) => {
+  const data = req.body;
 
-  if (!data) {
+  if (!validator.isMongoId(data.graphId)) {
     return res.sendRequestError(
-      new Error('"data" is not found')
+      new Error('"graphId" is not valid')
     );
   }
 
-  if (!validator.isMongoId(data.open_graph_id)) {
-    return res.sendRequestError(
-      new Error('"open_graph_id" is not valid')
-    );
-  }
+  const UID = req.getUID();
+  const graphId = data.graphId;
 
-  const creatorId = req.user.customData.mongoId;
-
-  OpenGraph.findById(data.open_graph_id)
+  return GraphModel.findById(graphId)
     .then((graph) => {
       if (!graph) {
         return Promise.reject(
-          new Error(`graph ${data.open_graph_id} not found`)
+          new Error(`graphId ${data.graphId} not found`)
         );
       }
 
-      const feedData = {
-        creator: creatorId,
-        type: data.type,
-        opengraph: graph.id
-      };
-
-      return Feed.create(feedData);
+      return Post.create({
+        owner: UID,
+        graph: graph.id
+      });
     })
-    .then((model) => libData.getFeedById(creatorId, model._id))
-    .then((feed) => {
+    .then((post) => libData.getPostById(post._id, {owner: UID}))
+    .then((post) => {
       const STATUS = 201;
       res.status(STATUS).json({
         status: STATUS,
         data: {
-          feed: feed.toJSON()
+          post: post.toJSON()
         }
       });
     })
@@ -70,8 +60,8 @@ router.post('/api/feed', (req, res) => {
 });
 
 /// https://github.com/fupslot/linkmator/wiki/API
-router.get('/api/feed', function(req, res) {
-  const currentUserId = req.user.customData.mongoId;
+router.get('/api/posts', function(req, res) {
+  const UID = req.getUID();
 
   const {type, t} = req.query;
   let timestamp = null;
@@ -92,22 +82,22 @@ router.get('/api/feed', function(req, res) {
   }
 
   return Promise.all([
-    libData.getPerson(currentUserId),
-    libData.getFeed(currentUserId, {type, timestamp})
+    libData.getPerson(UID),
+    libData.getPostsByUserId(UID, {type, timestamp})
   ]).then((models) => {
     const STATUS = 200;
     res.status(STATUS).json({
       status: STATUS,
       data: {
         person: models[0],
-        feed: models[1],
+        posts: models[1],
         timestamp: Date.now()
       }
     });
   }).catch(res.sendServerError);
 });
 
-router.delete('/api/feed', function(req, res) {
+router.delete('/api/posts', function(req, res) {
   const {id} = req.query;
 
   if (!id || !validator.isMongoId(id)) {
@@ -116,7 +106,7 @@ router.delete('/api/feed', function(req, res) {
     );
   }
 
-  return Feed.findByIdAndRemove(id)
+  return Post.findByIdAndRemove(id)
     .where('creator').equals(req.getUID())
     .then(() => {
       const STATUS = 200;

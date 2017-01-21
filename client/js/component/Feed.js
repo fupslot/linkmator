@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchFeed } from '../actions';
+import { fetchPosts } from '../actions';
 import FeedArticle from './FeedArticle';
 
 export class Feed extends React.Component {
@@ -11,7 +11,7 @@ export class Feed extends React.Component {
   }
 
   componentWillMount() {
-    this.props.fetchFeed();
+    this.props.fetchPosts();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -23,15 +23,15 @@ export class Feed extends React.Component {
   }
 
   renderFeedArticles() {
-    if (!this.props.items) {
+    if (!this.props.posts) {
       return null;
     }
 
-    return this.props.items.map((item, i) => {
+    return this.props.posts.map((item, i) => {
       return (
         <FeedArticle
           key={item._id}
-          model={item.opengraph}
+          model={item.graph}
           onRemove={this.handlePostRemove}/>
       );
     });
@@ -47,24 +47,24 @@ export class Feed extends React.Component {
 }
 
 Feed.defaultProps = {
-  items: null
+  posts: null
 };
 
 Feed.propTypes = {
-  items: React.PropTypes.array,
-  fetchFeed: React.PropTypes.func
+  posts: React.PropTypes.array,
+  fetchPosts: React.PropTypes.func
 };
 
 const mapStateToProps = (state) => {
   return {
-    items: state.feed.items
+    posts: state.feed.posts
   };
 };
 
 const FeedContainer = connect(
   mapStateToProps,
   {
-    fetchFeed
+    fetchPosts
   }
 )(Feed);
 

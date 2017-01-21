@@ -34,17 +34,17 @@ class FeedArticle extends React.Component {
     const model = this.props.model;
 
     // No image to render
-    if (!Array.isArray(model.image) || !model.image[0]) {
+    if (!model.image) {
       return null;
     }
 
-    const image = model.image[0];
+    const image = model.image;
 
     return (
       <ImageContainer>
         {({width: cWidth, height: cHeight}) => {
           return (
-            <ImagePreloader url={image.s3_object_key}>
+            <ImagePreloader url={image.s3Key}>
               {({url, width: imgWidth, height: imgHeight}) => {
                 const imageFitContaineer = (
                   imgWidth <= cWidth &&

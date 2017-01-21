@@ -2,6 +2,6 @@
 
 module.exports = function(server) {
   return {
-    feed: require('./feed')(server)
+    posts: require('./posts')(server)
   };
 };

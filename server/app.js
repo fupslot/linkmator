@@ -65,7 +65,7 @@ if ('development' === env) {
 
 // Routes
 app.use(require('./route/og'));
-app.use(require('./route/feed'));
+app.use(require('./route/posts'));
 app.use(require('./route/share'));
 
 // Render
