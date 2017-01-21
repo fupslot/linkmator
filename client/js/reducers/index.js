@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import {
-  REQUEST_FEED,
-  RECEIVED_FEED,
-  ERROR_FEED,
+  REQUEST_POSTS,
+  RECEIVED_POSTS,
+  ERROR_POSTS,
 
   SAVE_OPENGRAPH,
   SAVE_OPENGRAPH_FAILED,
@@ -25,7 +25,7 @@ const feedState = {
 
 function feed(state = feedState, action) {
   switch (action.type) {
-    case REQUEST_FEED:
+    case REQUEST_POSTS:
       return Object.assign(
         {},
         state,
@@ -34,18 +34,18 @@ function feed(state = feedState, action) {
         }
       );
 
-    case RECEIVED_FEED:
+    case RECEIVED_POSTS:
       return Object.assign(
         {},
         state,
         {
           isFetching: false,
           person: action.person,
-          items: [...action.items]
+          posts: [...action.posts]
         }
       );
 
-    case ERROR_FEED:
+    case ERROR_POSTS:
       return Object.assign(
         {},
         state,
@@ -58,7 +58,7 @@ function feed(state = feedState, action) {
       return Object.assign(
         {},
         state, {
-          items: [action.feed, ...state.items]
+          posts: [action.post, ...state.posts]
         }
       );
 

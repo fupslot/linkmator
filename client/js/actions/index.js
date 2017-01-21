@@ -1,8 +1,8 @@
 import createAPIRequest from '../util/createAPIRequest';
 
-export const REQUEST_FEED = 'REQUEST_FEED';
-export const RECEIVED_FEED = 'RECEIVED_FEED';
-export const ERROR_FEED = 'ERROR_FEED';
+export const REQUEST_POSTS = 'REQUEST_POSTS';
+export const RECEIVED_POSTS = 'RECEIVED_POSTS';
+export const ERROR_POSTS = 'ERROR_POSTS';
 
 export const SAVE_OPENGRAPH = 'SAVE_OPENGRAPH';
 export const SAVE_OPENGRAPH_FAILED = 'SAVE_OPENGRAPH_FAILED';
@@ -22,16 +22,16 @@ function apiFatalError(error) {
   };
 }
 
-export function fetchFeed() {
+export function fetchPosts() {
   return function(dispatch) {
-    dispatch(requestFeed());
+    dispatch(requestPosts());
 
     const headers = new Headers({
       'Accept': 'application/json'
     });
 
     const request = new Request(
-      '/api/feed',
+      '/api/posts',
       {
         method: 'GET',
         headers,
@@ -43,28 +43,28 @@ export function fetchFeed() {
 
     return fetch(request)
       .then((response) => response.json())
-      .then((json) => dispatch(receivedFeed(json)))
-      .catch((error) => dispatch(errorFeed(error)));
+      .then((json) => dispatch(receivedPosts(json)))
+      .catch((error) => dispatch(errorPosts(error)));
   };
 }
 
-function requestFeed() {
+function requestPosts() {
   return {
-    type: REQUEST_FEED
+    type: REQUEST_POSTS
   };
 }
 
-function receivedFeed(json) {
+function receivedPosts(json) {
   return {
-    type: RECEIVED_FEED,
+    type: RECEIVED_POSTS,
     person: json.data.person,
-    items: json.data.feed
+    posts: json.data.posts
   };
 }
 
-function errorFeed(error) {
+function errorPosts(error) {
   return {
-    type: ERROR_FEED,
+    type: ERROR_POSTS,
     message: error && error.message
   };
 }
@@ -73,7 +73,7 @@ export function createOpenGraph(url) {
   return function(dispatch) {
     dispatch(saveOpenGraph(url));
 
-    return fetch(createAPIRequest('POST', '/api/og', {url}))
+    return fetch(createAPIRequest('POST', '/api/graph', {url}))
       .then((response) => response.json())
       .then((json) => {
         if (json.errors) {
@@ -112,18 +112,16 @@ export function postGraphToFeed(id) {
     dispatch(postGraph(id));
 
     const body = {
-      data: {
-        open_graph_id: id
-      }
+      graphId: id
     };
 
-    return fetch(createAPIRequest('POST', '/api/feed', body))
+    return fetch(createAPIRequest('POST', '/api/posts', body))
       .then((response) => response.json())
       .then((json) => {
         if (json.errors) {
           return dispatch(postGraphFailed(json.errors));
         }
-        return dispatch(postGraphSuccess(json.data.feed));
+        return dispatch(postGraphSuccess(json.data.post));
       })
       .catch((error) => dispatch(apiFatalError(error)));
   };
@@ -136,10 +134,10 @@ function postGraph(id) {
   };
 }
 
-function postGraphSuccess(feed) {
+function postGraphSuccess(post) {
   return {
     type: POST_GRAPH_SUCCESS,
-    feed
+    post
   };
 }
 
