@@ -4,7 +4,7 @@ const request = require('request');
 const config = require('node-config-files')('./server/config');
 
 
-module.exports = function(imageUrlObject) {
+module.exports = function(imageObject) {
   const awsConfig = new AWS.Config({
     accessKeyId: config.common.s3.accessKeyId,
     secretAccessKey: config.common.s3.secretAccessKey,
@@ -22,8 +22,8 @@ module.exports = function(imageUrlObject) {
       const s3 = new AWS.S3(awsConfig);
 
       var params = {
-        Bucket: imageUrlObject.s3_bucket,
-        Key: imageUrlObject.s3_object_key,
+        Bucket: imageObject.s3Bucket,
+        Key: imageObject.s3Key,
         Body: response,
         ContentType: response.headers['content-type'],
         ContentLength: response.headers['content-length']
@@ -34,13 +34,12 @@ module.exports = function(imageUrlObject) {
           // Note: should be reported to a log system
           return resolve(err);
         }
-        return resolve(imageUrlObject);
+        return resolve(imageObject);
       });
     }
 
-    const url = imageUrlObject.url;
     request.get({
-      url,
+      url: imageObject.originalUrl,
       headers: {
         'User-Agent': config.common.server.userAgent
       }

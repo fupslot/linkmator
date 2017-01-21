@@ -9,9 +9,9 @@ const util = require('../util');
 const router = express.Router();
 
 /**
- * POST /api/get
+ * POST /api/graph
  */
-router.post('/api/og', function(req, res) {
+router.post('/api/graph', function(req, res) {
   const data = req.body;
   let url = data.url || '';
 

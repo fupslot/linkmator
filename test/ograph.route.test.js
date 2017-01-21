@@ -18,14 +18,14 @@ describe('HTTP Server', function() {
 
   before(testUtil.waitUntilServerIsReady);
 
-  describe('POST /api/og', function() {
+  describe('POST /api/graph', function() {
     it('url shold not allowed html tags', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       const url = '<script src="http://bad-host.com/script.js">';
 
       request(this.server)
-        .post('/api/og')
+        .post('/api/graph')
         .set('Cookie', `access_token=${accessToken}`)
         .send({url})
         .end(function(err, res) {
@@ -37,14 +37,14 @@ describe('HTTP Server', function() {
         });
     });
 
-    it('url shold be sanitized', function(done) {
+    it('url should be sanitized', function(done) {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       const rawUrl = 'Http://www.ExaMplE.cOm';
       const url = 'http://www.example.com';
 
       request(this.server)
-        .post('/api/og')
+        .post('/api/graph')
         .set('Cookie', `access_token=${accessToken}`)
         .send({ url: rawUrl })
         .end(function(err, res) {
@@ -60,7 +60,7 @@ describe('HTTP Server', function() {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       request(this.server)
-        .post('/api/og')
+        .post('/api/graph')
         .set('Cookie', `access_token=${accessToken}`)
         .send({})
         .end(function(err, res) {
@@ -76,7 +76,7 @@ describe('HTTP Server', function() {
       const accessToken = this.server.get('ACCESS_TOKEN');
 
       request(this.server)
-        .post('/api/og')
+        .post('/api/graph')
         .set('Cookie', `access_token=${accessToken}`)
         .send({
           url: 'http://www.example.com'

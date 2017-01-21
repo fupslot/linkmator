@@ -2,6 +2,7 @@
 'use strict';
 const colors = require('colors/safe');
 const OpenGraphModel = require('../model/opengraph');
+const GraphModel = require('../model/graph.model');
 const ImageObjectModel = require('../model/imageobject');
 const PersonModel = require('../model/person');
 const FeedModel = require('../model/feed');
@@ -27,6 +28,7 @@ function handler(modelName) {
 }
 
 OpenGraphModel.remove({}, handler('OpenGraphModel'));
+GraphModel.remove({}, handler('GraphModel'));
 ImageObjectModel.remove({}, handler('ImageObjectModel'));
 PersonModel.remove({}, handler('PersonModel'));
 FeedModel.remove({}, handler('FeedModel'));
