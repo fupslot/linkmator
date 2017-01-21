@@ -67,6 +67,7 @@ if ('development' === env) {
 app.use(require('./route/og'));
 app.use(require('./route/posts'));
 app.use(require('./route/share'));
+app.use(require('./route/friends'));
 
 // Render
 app.use('/app', stormpath.loginRequired, (req, res) => {
