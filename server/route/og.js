@@ -16,7 +16,7 @@ router.post('/api/graph', function(req, res) {
   let url = data.url || '';
 
   try {
-    url = util.toLowerCase(validator.trim(url));
+    url = validator.trim(url);
   } catch (error) {
     return res.sendModelValidationError(
       'url',
