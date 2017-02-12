@@ -11,8 +11,11 @@
     "start-debug": "./node_modules/.bin/nodemon -- debug server/app.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha test/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\"",
-    "build": "rm -rf .bin && NODE_ENV=production webpack --config ./webpack.config.production.js"
+    "build": "rm -rf .bin && NODE_ENV=production webpack --config ./webpack.config.production.js",
+    "lint": "./node_modules/.bin/eslint ./ --cache --ignore-pattern .gitignore",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
   },
+  "pre-commit": [ "precommit-msg", "lint" ],
   "keywords": [],
   "author": "Eugene Brodsky <fupslot@gmail.com>",
   "license": "Apache-2.0",
@@ -69,6 +72,7 @@
     "http-proxy": "^1.16.2",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2",
     "supertest": "^2.0.1"
   }
 }

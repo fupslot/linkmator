@@ -1,2 +1,4 @@
 node_modules
 .env
+heroku.js
+test/*.test.js
