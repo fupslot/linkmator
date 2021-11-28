@@ -45,14 +45,14 @@ function loginTestUser(server) {
         server.set('ACCESS_TOKEN', accessToken);
 
         if (!accessToken) {
-          reject(
+          return reject(
             new Error(
               `Wrong credentials for the user ${test_user_name}.
               Perhaps ${test_user_name} doesn't exist in Stormpath`
             )
           );
         } else {
-          resolve(server);
+          return resolve(server);
         }
       });
   });

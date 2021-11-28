@@ -12,7 +12,8 @@ module.exports = ({to, sharedUrl}, callback) => {
     from: 'support@linkmator.com',
     to: to,
     subject: 'Linkmator | Shared a post',
-    html: `Hello, ${to}. We glad to inform you that someone just shared a post with you ${sharedUrl}`
+    html: `Hello, ${to}. We glad to inform you that someone
+           just shared a post with you ${sharedUrl}`
   };
 
   mailgun.messages().send(data, callback);

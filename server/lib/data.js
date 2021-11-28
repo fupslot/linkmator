@@ -1,7 +1,7 @@
 'use strict';
 const Person = require('../model/person');
 // const OpenGraph = require('../model/opengraph');
-const Feed = require('../model/feed');
+// const Feed = require('../model/feed');
 const Post = require('../model/post.model');
 
 function getPerson(id) {

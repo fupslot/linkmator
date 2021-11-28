@@ -1,3 +1,4 @@
+/* eslint-disable */
 const request = require('request');
 const url = 'https://cms-assets.tutsplus.com/uploads/users/71/courses/1005/preview_image/RxJS400.png';
 
